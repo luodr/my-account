@@ -17,7 +17,8 @@
         <span class="date">03-19 18:22 备注</span>
         <span class="addMoney">2</span>
       </div>
-    </div><div class="info">
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -25,7 +26,8 @@
         <span class="date">03-19 18:22 备注</span>
         <span class="addMoney">2</span>
       </div>
-    </div><div class="info">
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -33,7 +35,8 @@
         <span class="date">03-19 18:22 备注</span>
         <span class="addMoney">2</span>
       </div>
-    </div><div class="info">
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -41,7 +44,8 @@
         <span class="date">03-19 18:22 备注</span>
         <span class="money">2</span>
       </div>
-    </div><div class="info">
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -49,15 +53,8 @@
         <span class="date">03-19 18:22 备注</span>
         <span class="money">2</span>
       </div>
-    </div><div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div><div class="info">
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -93,7 +90,7 @@
         <span class="money">2</span>
       </div>
     </div>
-       <div class="info">
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -102,7 +99,16 @@
         <span class="money">2</span>
       </div>
     </div>
-       <div class="info">
+    <div class="info">
+      <img src="../assets/trade_ico_exp_12.png" class="icon" />
+
+      <div class="info_div">
+        <span class="type">餐饮</span>
+        <span class="date">03-19 18:22 备注</span>
+        <span class="money">2</span>
+      </div>
+    </div>
+    <div class="info">
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -118,10 +124,16 @@
 export default {
   name: "listInfo",
   components: {},
-  data() {},
+  data() {
+    return { data: null };
+  },
   methods: {
     add: function() {
       alert("Hello ");
+    },
+    goBack() {
+      alert("??????");
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     }
   }
 };
@@ -130,14 +142,14 @@ export default {
 <style>
 #listInfo {
   color: black;
-  max-width: 768px;
+  max-width: 600px;
   width: 100%;
   margin: 0 auto;
 }
 .info {
   width: 90%;
   margin: 0 auto;
-  height:0.9rem;
+  height: 0.9rem;
   border-bottom: #efeef0 solid 1px;
   position: relative;
   /* top: 0.5rem; */
@@ -145,7 +157,7 @@ export default {
 }
 .icon {
   width: 0.8rem;
-  height:  0.8rem;
+  height: 0.8rem;
   display: block;
   float: left;
 }
@@ -154,7 +166,7 @@ export default {
 }
 .type {
   /* line-height: 0.6rem; */
- padding-top:7px; ;
+  padding-top: 7px;
 }
 .date {
   font-size: 0.23rem;
