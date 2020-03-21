@@ -22,6 +22,7 @@
     <listInfo></listInfo>
 
     <div id="add" v-on:click="add"></div>
+    
   </div>
 </template>
 
@@ -96,8 +97,6 @@ export default {
   position: relative;
   top: 0.3rem;
   /* font-size: 0.3rem; */
-  vertical-align:middle;
-
-
+  vertical-align: middle;
 }
 </style>
