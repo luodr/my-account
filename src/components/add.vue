@@ -110,16 +110,40 @@
       </ul>
     </div>
     <div id="inputInfo">
-     
-        <datetimePicker class="date_div"></datetimePicker>
-      
+      <datetimePicker
+        class="date_div"
+        v-on:calculator_hide="calculator_hide"
+        v-on:calculator_show="calculator_show"
+      ></datetimePicker>
+      <div class="counter" v-if="isShowCounter">
+        <div class="counter_left">
+          <ul>
+            <li
+              class="ripple"
+              v-for="(item,index) in counterItem"
+              v-bind:key="index"
+              @click="clickCounter($event)"
+            >{{item}}</li>
+
+            <li class="ripple">
+              <img src="../assets/calc_delete.png" class="calc_delete" />
+            </li>
+          </ul>
+        </div>
+        <div class="counter_right">
+          <ul>
+            <li class="ripple" @click="clickCounter($event)">+</li>
+            <li class="ripple" @click="clickCounter($event)">-</li>
+            <li class="ripple" id="ok">=</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import datetimePicker from "./datetimePicker.vue";
-
 export default {
   name: "add_com",
   path: "/add",
@@ -130,7 +154,10 @@ export default {
       income: false,
       transfer: false,
       type: "餐饮",
-      money: "0.00"
+      money: 0.0,
+      isShowCounter: true,
+      counterItem: [1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0],
+      countDot:0
     };
   },
   methods: {
@@ -148,6 +175,17 @@ export default {
       this.expenditure = false;
       this.income = false;
       this.transfer = true;
+    },
+    clickCounter(event) {
+      var el = event.currentTarget;
+      let num = el.innerHtML;
+     this.money=this.money+""+num;
+    },
+    calculator_hide() {
+      //this.isShowCounter = false;
+    },
+    calculator_show() {
+      this.isShowCounter = true;
     }
   },
   goBack() {
@@ -235,9 +273,9 @@ export default {
   line-height: 0.6rem;
 }
 #inputInfo {
-  background: cornflowerblue;
+  background: white;
   width: 100%;
-  height: 5rem;
+
   position: absolute;
   bottom: 0;
   /* max-height: 50%; */
@@ -246,8 +284,49 @@ export default {
 .date_div {
   width: 100%;
   background: white;
-  height: 1rem;
-  vertical-align:middle;
 
+  height: 1rem;
+  vertical-align: middle;
+  border-bottom: #c3c0c0 solid 1px;
+}
+.counter {
+  width: 100%;
+  height: 4rem;
+  vertical-align: middle;
+}
+.counter_left {
+  width: 80%;
+  display: inline-block;
+}
+.counter_left ul li {
+  width: 33.333%;
+  text-align: center;
+  line-height: 1rem;
+  height: 1rem;
+  float: left;
+  list-style: none;
+}
+.counter_right {
+  width: 20%;
+  display: inline-block;
+}
+#ok {
+  line-height: 2rem;
+  height: 2rem;
+  background: linear-gradient(#72b7fc, #9577fd);
+}
+.counter_right ul li {
+  list-style: none;
+  line-height: 1rem;
+  height: 1rem;
+  text-align: center;
+  width: 100%;
+  float: left;
+}
+.calc_delete {
+  width: 0.5rem;
+  height: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>

@@ -63,7 +63,8 @@ export default {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  background: url(../assets/banner.png);
+  /* background: url(../assets/banner.png); */
+  background: linear-gradient(#72b7fc,#9577fd);
   background-repeat: no-repeat;
   background-size: cover;
   height: 3rem;

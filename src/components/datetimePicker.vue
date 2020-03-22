@@ -2,13 +2,19 @@
   <div class="datatime-picker-wrap">
     <div class="date_line">
       <div class="sp-date">
-      <img src="../assets/date.png" class="date_icon" />
-      <span> {{date}}</span>
-    </div>
+        <img src="../assets/date.png" class="date_icon" />
+        <span>&nbsp;{{date}}</span>
+      </div>
       <div class="jiange" style="border-right: black solid 1px;"></div>
       <div class="jiange"></div>
-      <img src="../assets/remark.png" class="date_icon" /> 
-      <input type="text" placeholder="写点啥备注下" class="remark"> 
+      <img src="../assets/remark.png" class="date_icon" />
+      <input
+        type="text"
+        placeholder="写点啥备注下"
+        class="remark"
+        @blur="$emit('calculator_show')"
+        @focus="$emit('calculator_hide')"
+      />
     </div>
   </div>
 </template>
@@ -17,19 +23,19 @@
 <style scoped>
 .sp-date {
   display: inline-block;
-  
 }
-.date_line{
-    height: 100%;
+.date_line {
+  height: 100%;
   width: 95%;
   position: relative;
   left: 5%;
   vertical-align: middle;
   line-height: 1rem;
 }
-.remark{
-  border: none;;
+.remark {
+  border: none;
   position: relative;
+  width: 100%;
   left: 0.2rem;
 }
 .date_icon {
