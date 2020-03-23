@@ -1,31 +1,16 @@
 import './js/rem.js'
-
+// 引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 import Vue from 'vue'
 import App from './App.vue'
 // import router from './router/router.js'
 Vue.config.productionTip = false
 import VueRouter from 'vue-router'
-
+import router from './router/router'
 Vue.use(VueRouter)
-import index from './components/index.vue'
-import add from './components/add.vue'
-import test from './components/test.vue'
 
-const routes = [
-
-    {
-        path: '/', component: index, alias: '/index'
-    },
-    { path: '/add', component: add },
-    { path: '/test', component: test }
-
-
-]
-const router = new VueRouter({
-    // mode: 'history',
-    routes
-})
 
 
 new Vue({

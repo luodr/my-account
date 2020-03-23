@@ -2,7 +2,13 @@
   <div id="main">
     <div id="banner">
       <div class="content">
-        <div class="banner_top"></div>
+        <div class="banner_top">
+          <div>
+             <router-link to="/line">
+            <img src="../assets/baobiao.png" class="baobiao_icon"/>
+             </router-link>
+          </div>
+        </div>
 
         <div class="bannerbottom">
           <ul class="month_title">
@@ -12,7 +18,7 @@
           </ul>
 
           <ul class="month_info">
-            <li style="  border-right: white solid 1px;">222</li>
+            <li style="border-right: white solid 1px;">222</li>
             <li>22</li>
             <li></li>
           </ul>
@@ -99,5 +105,16 @@ export default {
   top: 0.3rem;
   /* font-size: 0.3rem; */
   vertical-align: middle;
+}
+   .banner_top div{
+     width: 95%;
+     position: relative;
+     top: 0.5rem;
+   }
+.baobiao_icon{
+float: right;
+width: 0.4rem;
+height: 0.4rem;
+
 }
 </style>

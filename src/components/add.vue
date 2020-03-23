@@ -161,25 +161,29 @@ export default {
     };
   },
   methods: {
+    //支出
     clickExpenditure() {
       this.expenditure = true;
       this.income = false;
       this.transfer = false;
     },
+    //收入
     clickIncome() {
       this.expenditure = false;
       this.income = true;
       this.transfer = false;
     },
+    //转账
     clickTransfer() {
       this.expenditure = false;
       this.income = false;
       this.transfer = true;
     },
+    //键盘点击
     clickCounter(event) {
       var el = event.currentTarget;
       let num = el.innerHtML;
-     this.money=this.money+""+num;
+    //  this.money=this.money+""+num;
     },
     calculator_hide() {
       //this.isShowCounter = false;
@@ -189,7 +193,7 @@ export default {
     }
   },
   goBack() {
-    window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+    // window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
   }
 };
 </script>

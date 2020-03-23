@@ -35,7 +35,6 @@
 .remark {
   border: none;
   position: relative;
-  width: 100%;
   left: 0.2rem;
 }
 .date_icon {
