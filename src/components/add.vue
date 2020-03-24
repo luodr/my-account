@@ -1,19 +1,22 @@
 <template>
   <div id="add_com">
-    <div id="add_top">
-      <div id="add_titleInfo">
-        <!-- 
-        <h1 id="add_title" >日常账单</h1>-->
-        <div style="position:absolute;top:0px;text-align:center;width:100%;font-size:0.4rem;">
-          <h5>日常账本</h5>
-        </div>
-        <div style="position:absolute;top:0px;float:left;text-align:left;width:100%">
-          <router-link to="/">
-            <img src="../assets/icon_back_black.png" class="go_back" />
-          </router-link>
-        </div>
-      </div>
-    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <top title="日常账单"></top>
     <div id="recordType">
       <ul>
         <li :class="{click_color:expenditure}" v-on:click="clickExpenditure">支出</li>
@@ -109,7 +112,7 @@
         </li>
       </ul>
     </div>
-    <div id="inputInfo">
+<div id="inputInfo">
       <datetimePicker
         class="date_div"
         v-on:calculator_hide="calculator_hide"
@@ -144,10 +147,13 @@
 
 <script>
 import datetimePicker from "./datetimePicker.vue";
+import top from "./top.vue";
+
 export default {
   name: "add_com",
   path: "/add",
-  components: { datetimePicker },
+
+  components: { datetimePicker, top },
   data() {
     return {
       expenditure: true,
@@ -157,7 +163,7 @@ export default {
       money: 0.0,
       isShowCounter: true,
       counterItem: [1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0],
-      countDot:0
+      countDot: 0
     };
   },
   methods: {
@@ -183,7 +189,7 @@ export default {
     clickCounter(event) {
       var el = event.currentTarget;
       let num = el.innerHtML;
-    //  this.money=this.money+""+num;
+      //  this.money=this.money+""+num;
     },
     calculator_hide() {
       //this.isShowCounter = false;
@@ -192,6 +198,7 @@ export default {
       this.isShowCounter = true;
     }
   },
+
   goBack() {
     // window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
   }
@@ -203,28 +210,7 @@ export default {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-}
-#add_top {
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 1rem;
-
-  text-align: center;
-}
-#add_titleInfo {
-  /* background: red; */
-  position: relative;
-  top: 0.2rem;
-  width: 90%;
-  margin: 0 auto;
-}
-#add_title {
-  color: #000;
-  font-size: 0.3rem;
-  /* position: absolute; */
-  /* vertical-align: middle; */
-  /* display: inline-block; */
-  /* float: none; */
+  min-height: 100%;
 }
 #recordType {
   width: 50%;
@@ -279,11 +265,13 @@ export default {
 #inputInfo {
   background: white;
   width: 100%;
-
-  position: absolute;
-  bottom: 0;
-  /* max-height: 50%; */
   max-width: 600px;
+  height: 5rem;
+  position:absolute;
+  bottom: 0;
+
+  /* max-height: 50%; */
+  /* margin-top: -5rem; */
 }
 .date_div {
   width: 100%;

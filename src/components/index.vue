@@ -4,9 +4,9 @@
       <div class="content">
         <div class="banner_top">
           <div>
-             <router-link to="/line">
-            <img src="../assets/baobiao.png" class="baobiao_icon"/>
-             </router-link>
+            <router-link to="/report">
+              <img src="../assets/baobiao.png" class="baobiao_icon" />
+            </router-link>
           </div>
         </div>
 
@@ -28,7 +28,6 @@
     <listInfo></listInfo>
 
     <div id="add" v-on:click="add"></div>
-    
   </div>
 </template>
 
@@ -38,6 +37,7 @@ import listInfo from "./listInfo.vue";
 export default {
   name: "index",
   path: "/",
+
   components: {
     listInfo
   },
@@ -59,18 +59,15 @@ export default {
 #main {
   /* min-height:100vh; */
   color: white;
-}
-.content {
-  max-width: 600px;
-  width: 100%;
-  margin: 0 auto;
-}
-#banner {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  min-height: 100%;
   /* background: url(../assets/banner.png); */
-  background: linear-gradient(#72b7fc,#9577fd);
+}
+
+#banner {
+  background: linear-gradient(#72b7fc, #9577fd);
   background-repeat: no-repeat;
   background-size: cover;
   height: 3rem;
@@ -106,15 +103,23 @@ export default {
   /* font-size: 0.3rem; */
   vertical-align: middle;
 }
-   .banner_top div{
-     width: 95%;
-     position: relative;
-     top: 0.5rem;
-   }
-.baobiao_icon{
-float: right;
-width: 0.4rem;
-height: 0.4rem;
-
+.banner_top div {
+  width: 95%;
+  position: relative;
+  top: 0.5rem;
 }
+.baobiao_icon {
+  float: right;
+  width: 0.4rem;
+  height: 0.4rem;
+}
+/* }
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+} */
 </style>

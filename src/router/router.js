@@ -11,11 +11,12 @@ import line from '../components/line.vue'
 const routes = [
 
     {
-        path: '/', component: index, alias: '/index'
+        path: '/', component: index, alias: '/index',
+        meta: { index: 0},
     },
-    { path: '/add', component: add },
-    { path: '/report', component: report },
-    { path: '/line', component: line },
+    { path: '/add', component: add,  meta: { index: 1 } },
+    { path: '/report', component: report ,  meta: { index: 1 }},
+    { path: '/line', component: line,  meta: { index: 1 } },
 
 
 

@@ -128,13 +128,7 @@ export default {
     return { data: null };
   },
   methods: {
-    add: function() {
-      alert("Hello ");
-    },
-    goBack() {
-      alert("??????");
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
-    }
+    
   }
 };
 </script>
@@ -150,7 +144,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   height: 0.9rem;
-  border-bottom: #efeef0 solid 1px;
+  border-bottom: #b1abb8 solid 1px;
   position: relative;
   /* top: 0.5rem; */
   font-size: 0.3rem;
