@@ -74,14 +74,14 @@ export default {
   text-align: center;
 }
 #add {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   position: fixed;
   left: 50%;
-  bottom: 0.2rem;
+  bottom: 1rem;
   /* margin-top:-50px; */
 
-  margin-left: -50px;
+  margin-left: -25px;
   background: url(../assets/voice_guide_00016.png);
   background-repeat: no-repeat;
   background-size: cover;

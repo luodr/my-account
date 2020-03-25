@@ -8,6 +8,7 @@ import index from '../components/index.vue'
 import add from '../components/add.vue'
 import report from '../components/report.vue'
 import line from '../components/line.vue'
+import itemInfo from '../components/itemInfo.vue'
 const routes = [
 
     {
@@ -17,6 +18,9 @@ const routes = [
     { path: '/add', component: add,  meta: { index: 1 } },
     { path: '/report', component: report ,  meta: { index: 1 }},
     { path: '/line', component: line,  meta: { index: 1 } },
+    { path: '/itemInfo', component: itemInfo,  meta: { index: 1 } },
+
+    
 
 
 

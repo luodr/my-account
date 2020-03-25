@@ -1,114 +1,11 @@
 <template>
   <div id="listInfo">
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="addMoney">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="addMoney">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="addMoney">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
-      <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
-      <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
-      </div>
-    </div>
-    <div class="info">
+    <div
+      class="info"
+      v-for="(item,index) in infos"
+      v-bind:key="index"
+      @click="onClick($event)"
+    >
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
 
       <div class="info_div">
@@ -125,10 +22,37 @@ export default {
   name: "listInfo",
   components: {},
   data() {
-    return { data: null };
+    return {
+      infos: [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    };
   },
   methods: {
-    
+    onClick(event) {
+      this.$router.push("/itemInfo");
+    }
   }
 };
 </script>
