@@ -7,9 +7,9 @@ import Vue from 'vue'
 import App from './App.vue'
 // import router from './router/router.js'
 Vue.config.productionTip = false
-import VueRouter from 'vue-router'
+
 import router from './router/router'
-Vue.use(VueRouter)
+
 
 
 
