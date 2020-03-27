@@ -1,0 +1,6 @@
+{
+    "accessKeyId": "你的阿里云accessKeyId",
+    "secretAccessKey": "你的阿里云secretAccessKey",
+    "SignName": "你的阿里云短信签名",
+    "TemplateCode": "你的阿里云短信模板   ss  "
+}

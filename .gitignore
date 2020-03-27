@@ -2,6 +2,7 @@
 node_modules
 dist
 /server/src/config/*
+!/server/src/config/sms.json
 # local env files
 .env.local
 .env.*.local
