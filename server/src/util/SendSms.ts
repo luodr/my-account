@@ -1,7 +1,7 @@
 
 const Core = require('@alicloud/pop-core');
 const sms = require("../config/sms.json");
-export default async function (PhoneNumbers: String,code:String) {
+export default async function (PhoneNumbers: String, code: String) {
     var client = new Core({
         accessKeyId: sms.accessKeyId,
         secretAccessKey: sms.secretAccessKey,
@@ -18,11 +18,13 @@ export default async function (PhoneNumbers: String,code:String) {
     var requestOption = {
         method: 'POST'
     };
-    client.request('SendSms', params, requestOption).then((result) => {
-        console.log(JSON.stringify(result));
-    }, (ex) => {
-        console.log(ex);
-    })
+    return await new Promise((resolve, reject) => {
+        client.request('SendSms', params, requestOption).then((result) => {
+            resolve(JSON.stringify(result));
+        }, (ex) => {
+            reject(ex);
+        })
+    });
 }
 
 
