@@ -1,4 +1,4 @@
-import  "./ConnectDB"
+import "./ConnectDB"
 import express from 'express'
 import { json, urlencoded } from 'body-parser'
 import session from "express-session"
@@ -25,12 +25,18 @@ class App {
             saveUninitialized: true, cookie: { maxAge: 60000 }
         }))
     }
+    /**
+     * 注册路由
+     */
     private registerRouter() {
         RouterArray.decoratedRouters.forEach((value) => {
             console.log("注册:  ", value.method, "  ", value.path);
             this.app[value.method](value.path, value.fun);
         });
     }
+    /**
+     * 加载路由
+     */
     private loadRouter() {
         const routers = __dirname + "/router"
         fs.readdirSync(routers).forEach(file => {

@@ -3,7 +3,7 @@ import SendSms from "../util/SendSms"
 import Message from "../bean/Message"
 import { router } from "../decorators/web"
 import User from "../model/User"
-export class Login {
+export default class Login {
     /**
      *  发送验证码 
      */
@@ -39,6 +39,7 @@ export class Login {
                 user.phoneNumber = body.PhoneNumber;
                 user = await user.save();
             }
+            req.session.user = user;
             res.json(new Message(0, "登录成功", user));
         } else {
             res.json(new Message(0, "验证码错误!请稍后重试!", null));
@@ -46,4 +47,3 @@ export class Login {
 
     }
 }
-export default Login;

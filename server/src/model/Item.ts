@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 interface IItem extends mongoose.Document {
+
     /**类型 */
     type: string;
     /**细节 如:晚饭 or 午饭 */
@@ -17,12 +18,21 @@ interface IItem extends mongoose.Document {
     /** 创建时间 */
     createdAt: Date;
 }
+
 const schema = new mongoose.Schema({
-    type: String,
-    detail: String,
-    money: Number,
+    type: {
+        type: String, required: [true, undefined, null, ""]
+    },
+    detail: {
+        type: String, required: [true, undefined, null, ""]
+    },
+    money: {
+        type: Number,min: [1]
+    },
     date: { type: Date, default: Date.now },
-    phoneNumber: String,
+    phoneNumber: {
+        type: String, required: [true, undefined, null, ""]
+    },
     remark: String,
     account: String,
     createdAt: { type: Date, default: Date.now }
