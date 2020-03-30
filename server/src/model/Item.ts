@@ -27,5 +27,5 @@ const schema = new mongoose.Schema({
     account: String,
     createdAt: { type: Date, default: Date.now }
 }, { collection: 'item', id: true });
-
+schema.index({ phoneNumber: 1 });
 export default mongoose.model<IItem>("item", schema);

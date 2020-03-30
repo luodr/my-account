@@ -1,32 +1,18 @@
-
-// SendSms("13737148529", "123456789");
+import  "./ConnectDB"
 import express from 'express'
 import { json, urlencoded } from 'body-parser'
-import login from "./router/Login"
-import parseurl from 'parseurl'
 import session from "express-session"
-
+import { RouterArray } from "./decorators/web"
+import fs from "fs"
 class App {
     public app: express.Application;
     constructor() {
         this.app = express();
         this.config()
-
-        // 引入路由
-        this.app.get('/', function (req, res, next) {
-            if (req.session.views) {
-                req.session.views++
-              
-                res.end()
-            } else {
-                req.session.views = 1
-                res.end()
-            }
-            console.log(req.session.views);
-
-        })
-        this.app.use("/login", login);
-
+        //加载路由
+        this.loadRouter();
+        //注册路由
+        this.registerRouter();
     }
     private config() {
         //支持  application/json类型 发送数据
@@ -39,6 +25,19 @@ class App {
             saveUninitialized: true, cookie: { maxAge: 60000 }
         }))
     }
-
+    private registerRouter() {
+        RouterArray.decoratedRouters.forEach((value) => {
+            console.log("注册:  ", value.method, "  ", value.path);
+            this.app[value.method](value.path, value.fun);
+        });
+    }
+    private loadRouter() {
+        const routers = __dirname + "/router"
+        fs.readdirSync(routers).forEach(file => {
+            if (file.includes(".js")) {
+                require(routers + "/" + file);
+            }
+        });
+    }
 }
 new App().app.listen(3000);

@@ -24,5 +24,5 @@ const schema = new mongoose.Schema({
     },
     createdAt: { type: Date, default: Date.now }
 }, { collection: 'user', id: true });
-
+schema.index({ phoneNumber: 1 }, { unique: true });
 export default mongoose.model<IUser>("user", schema);

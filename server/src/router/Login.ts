@@ -1,62 +1,49 @@
-import express from "express"
+import { Request, Response } from "express"
 import SendSms from "../util/SendSms"
-import message from "../bean/Message"
+import Message from "../bean/Message"
+import { router } from "../decorators/web"
+import User from "../model/User"
 export class Login {
-    public router = express.Router();
-    constructor() {
-        //发送验证码
-        this.router.post("/send", async (req, res, next) => {
-            let b: boolean = await this.checkoutPhone(req.body.PhoneNumber, req);
-            if (b) {
-                res.json(new message(1, "发送成功!", null));
-            } else {
-                res.json(new message(0, "发送失败,请稍后重试", null));
-            }
-        });
-        //检验验证码
-        this.router.post("/verify", async (req, res) => {
-            let body: any = req.body;
-            let verify = this.verify(body.PhoneNumber, body.securityCode, req);
-            if (verify) {//验证成功读取数据
-                //   .....  略过
-            } else { //验证失败
-                res.json(new message(0, "验证码错误!", null));
-            }
-        })
-    }
     /**
      *  发送验证码 
-     * @param PhoneNumber  手机号码
-     * @param req  请求
      */
-    private async checkoutPhone(PhoneNumber: string, req): Promise<boolean> {
+    @router("post", "/login/send")
+    private async checkoutPhone(req: Request, res: Response) {
+        let PhoneNumber = req.body.PhoneNumber;
         if (!PhoneNumber) {
-            return false;
+            res.json(new Message(0, "请输入正确的手机号吗", null));
         }
         //验证码
         let securityCode = Math.random().toFixed(6).substr(2);
-        let message: any = await SendSms(PhoneNumber, securityCode);
-        if (message.Code == "OK") {
+        let msg: any = await SendSms(PhoneNumber, securityCode);
+        if (msg.Code == "OK") {
             //把验证码和手机号保存到seesion
-            req.seesion.securityCode = securityCode;
-            req.seesion.PhoneNumber = PhoneNumber;
-            return true;
+            req.session.securityCode = securityCode;
+            req.session.PhoneNumber = PhoneNumber;
+            res.json(new Message(1, "发送成功!", null));
+        } else {
+            res.json(new Message(0, "发送失败,请稍后重试", null));
         }
-        return false;
     }
     /**
-     *  校验验证码
-     * @param PhoneNumber 手机号
-     * @param securityCode  验证码
-     * @param req  请求
+     *  校验验证码.并登录,老用户直接返回,新用户创建并返回
      */
-    private verify(PhoneNumber: string, securityCode: string, req): boolean {
-        if (req.seesion.securityCode == securityCode && PhoneNumber == req.seesion.PhoneNumber) {
-            return true;
+    @router("post", "/login/verify")
+    private async verify(req: Request, res: Response) {
+        let body = req.body;
+        if (req.session.securityCode == body.securityCode && body.PhoneNumber == req.session.PhoneNumber) {
+
+            let user = await User.findOne({ phoneNumber: body.PhoneNumber });
+            if (!user) {
+                user = new User();
+                user.phoneNumber = body.PhoneNumber;
+                user = await user.save();
+            }
+            res.json(new Message(0, "登录成功", user));
         } else {
-            return false;
+            res.json(new Message(0, "验证码错误!请稍后重试!", null));
         }
 
     }
 }
-export default new Login().router;
+export default Login;

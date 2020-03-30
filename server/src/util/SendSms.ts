@@ -20,9 +20,9 @@ export default async function (PhoneNumbers: String, code: String) {
     };
     return await new Promise((resolve, reject) => {
         client.request('SendSms', params, requestOption).then((result) => {
-            resolve(JSON.stringify(result));
+            resolve((result));
         }, (ex) => {
-            reject(ex);
+            resolve(ex);
         })
     });
 }
