@@ -21,8 +21,11 @@ class App {
         this.app.use(urlencoded({ extended: false }));
         //设置 seesion
         this.app.use(session({
-            secret: 'keyboard cat', resave: false,
-            saveUninitialized: true, cookie: { maxAge: 60000 }
+            secret: 'you see see money',
+            cookie: {maxAge: 1800000}, 
+            rolling: true,
+            resave: true,
+            saveUninitialized: true
         }))
     }
     /**

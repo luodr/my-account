@@ -14,6 +14,7 @@ function refreshRem() {
     maxWidth = maxWidth || 540;
     width>maxWidth && (width=maxWidth);
     var rem = width * 100 / designWidth;
+    rem=Math.min(rem,45)
     remStyle.innerHTML = 'html{font-size:' + rem + 'px;}';
 }
 

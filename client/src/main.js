@@ -1,7 +1,10 @@
 import './js/rem.js'
+import axios from "axios"
 // 引入echarts
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+Vue.prototype.$axios = axios
+
 
 import Vue from 'vue'
 import App from './App.vue'

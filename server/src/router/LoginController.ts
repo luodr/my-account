@@ -15,7 +15,9 @@ export default class LoginController {
         }
         //验证码
         let securityCode = Math.random().toFixed(6).substr(2);
+        // securityCode = "026936";
         let msg: any = await SendSms(PhoneNumber, securityCode);
+        console.log(securityCode);
         if (msg.Code == "OK") {
             //把验证码和手机号保存到seesion
             req.session.securityCode = securityCode;
@@ -31,6 +33,8 @@ export default class LoginController {
     @router("post", "/login/verify")
     private async verify(req: Request, res: Response) {
         let body = req.body;
+        console.log(req.session);
+
         if (req.session.securityCode == body.securityCode && body.PhoneNumber == req.session.PhoneNumber) {
 
             let user = await User.findOne({ phoneNumber: body.PhoneNumber });
@@ -40,7 +44,7 @@ export default class LoginController {
                 user = await user.save();
             }
             req.session.user = user;
-            res.json(new Message(0, "登录成功", user));
+            res.json(new Message(1, "登录成功", user));
         } else {
             res.json(new Message(0, "验证码错误!请稍后重试!", null));
         }
