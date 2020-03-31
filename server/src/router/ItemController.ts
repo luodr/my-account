@@ -3,7 +3,7 @@ import Message from "../bean/Message"
 import { router } from "../decorators/web"
 import Item from "../model/Item";
 import DateUtil from "../util/DateUtil";
-export default class ItemManager {
+export default class ItemController {
     /**
      *  添加一条收支
      */
@@ -46,7 +46,7 @@ export default class ItemManager {
      */
     @router("post", "/item/findMonthAndType")
     async findMonthAndType(req: Request, res: Response) {
-        let dates = ItemManager.getDate(req, res);
+        let dates = ItemController.getDate(req, res);
         let array = await Item.aggregate([
             {
                 '$match': {
@@ -72,11 +72,11 @@ export default class ItemManager {
         res.json(new Message(1, "查询成功!", array));
     }
     /**
-        * 按月份查询,不发类
+        * 按月份查询,不分类
         */
     @router("post", "/item/findMonth")
     async findMonthe(req: Request, res: Response) {
-        let dates = ItemManager.getDate(req, res);
+        let dates = ItemController.getDate(req, res);
         console.log(dates);
 
         let array = await Item.aggregate([
@@ -99,7 +99,7 @@ export default class ItemManager {
      */
     @router("post", "/item/findMonthAndDetail")
     async findMonthAndDetail(req: Request, res: Response) {
-        let dates = ItemManager.getDate(req, res);
+        let dates = ItemController.getDate(req, res);
         let array = await Item.aggregate([
             {
                 '$match': {

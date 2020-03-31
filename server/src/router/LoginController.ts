@@ -3,7 +3,7 @@ import SendSms from "../util/SendSms"
 import Message from "../bean/Message"
 import { router } from "../decorators/web"
 import User from "../model/User"
-export default class Login {
+export default class LoginController {
     /**
      *  发送验证码 
      */
