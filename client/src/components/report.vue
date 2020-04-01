@@ -2,33 +2,37 @@
   <!--报表-->
   <div id="report_com">
     <top title="报表"></top>
-    <div class="report_option">3.1-3.31</div>
+    <div class="report_option">4.1-4.30</div>
     <div class="report_info">
       <ul>
         <li>
           <div>
-            <p class="report_money report_moneyNow">322.00</p>
+            <p class="report_money" :class="consume" @click="clickExpenditure">{{expend.toFixed(2)}}</p>
 
             <p class="report_moneyType">总支出</p>
           </div>
         </li>
         <li>
           <div>
-            <p class="report_money">322.00</p>
+            <p class="report_money" :class="incomes" @click="clickIncome">{{income.toFixed(2)}}</p>
 
-            <p class="report_moneyType">总支出</p>
+            <p class="report_moneyType">总收入</p>
           </div>
         </li>
         <li>
           <div>
-            <p class="report_money">322.00</p>
+            <p
+              class="report_money"
+              :class="surplus"
+              @click="clickSurplus"
+            >{{(income-expend).toFixed(2)}}</p>
 
-            <p class="report_moneyType">总支出</p>
+            <p class="report_moneyType">总结余</p>
           </div>
         </li>
       </ul>
     </div>
-    <cake></cake>
+    <cake :data=" cake"></cake>
 
     <div class="hr_div"></div>
     <listInfo></listInfo>
@@ -44,11 +48,90 @@ export default {
   path: "/report",
 
   components: { top, cake, listInfo },
-  mounted() {},
-  data() {
-    return { data: null };
+  mounted() {
+    ///
+    let date = new Date();
+    this.getDate(date.getFullYear(), date.getMonth() + 1);
   },
-  methods: {}
+  created() {},
+  data() {
+    return {
+      data: null,
+      income: 0,
+      expend: 0,
+      incomeMap: new Map(),
+      expendMap: new Map(),
+      surplus: "",
+      incomes: "",
+      consume: "report_moneyNow",
+      cake: []
+    };
+  },
+  methods: {
+    //获取数据
+    getDate(year, month) {
+      this.incomeMap.clear();
+      this.expendMap.clear();
+      this.$axios
+        .post("/item/findMonthAndType", {
+          year,
+          month
+        })
+        .then(result => {
+          if (result.data.code) {
+            this.data = result.data.data;
+            for (let items of this.data) {
+              if (items._id == "收入") {
+                this.income = items.allMoney;
+                this.getClassify(this.incomeMap, items.items);
+              } else {
+                this.expend = items.allMoney;
+                this.getClassify(this.expendMap, items.items);
+              }
+            }
+            this.clickExpenditure();
+          }
+        });
+    },
+    getClassify(map, array) {
+      for (let item of array) {
+        if (map.has(item.detail)) {
+          let l = map.get(item.detail);
+          l.value += item.money;
+        } else {
+          map.set(item.detail, { name: item.detail, value: item.money });
+        }
+      }
+    },
+    mapToArray(map) {
+      var list = [];
+      map.forEach(value => {
+        list.push(value);
+      });
+      return list;
+    },
+    //支出
+    clickExpenditure() {
+      this.consume = "report_moneyNow";
+      this.incomes = "";
+      this.surplus = "";
+      this.cake = this.mapToArray(this.expendMap);
+     
+    },
+    //收入
+    clickIncome() {
+      this.consume = "";
+      this.incomes = "report_moneyNow";
+      this.surplus = "";
+      this.cake = this.mapToArray(this.incomeMap);
+    },
+    //转账
+    clickSurplus() {
+      // this.consume = "";
+      // this.incomes = "";
+      // this.surplus = "report_moneyNow";
+    }
+  }
 };
 </script>
 

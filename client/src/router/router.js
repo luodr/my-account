@@ -19,7 +19,7 @@ const routes = [
     { path: '/add', component: add,  meta: { index: 1 } },
     { path: '/report', component: report ,  meta: { index: 1 }},
     { path: '/line', component: line,  meta: { index: 1 } },
-    { path: '/itemInfo', component: itemInfo,  meta: { index: 1 }},
+    { path: '/itemInfo', component: itemInfo,  meta: { index: 1 },name:"itemInfo"},
     { path: '/login', component: login,  meta: { index: 1 }},
 ]
 const router = new VueRouter({

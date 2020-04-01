@@ -4,12 +4,12 @@
     <div id="itemeInfo">
       <div class="itemTitleAndMoney">
         <img src="../assets/wucan.png" class="itemImg" />
-        <span class="itemTitle">晚餐</span>
-        <span class="itemMoney">666</span>
+        <span class="itemTitle">{{data.detail}}</span>
+        <span class="itemMoney">{{data.money}}</span>
       </div>
       <div class="item_detail">
         <span class="itemTitle">类型</span>
-        <span class="detail">支出</span>
+        <span class="detail">{{data.type}}</span>
       </div>
 
       <div class="item_detail">
@@ -18,10 +18,10 @@
       </div>
       <div class="item_detail">
         <span class="itemTitle">备注</span>
-        <span class="detail">吃了好吃的</span>
+        <span class="detail">{{data.remark}}</span>
       </div>
     </div>
-   <div id="delete" v-on:click="onDeleteClick"></div>
+    <div id="delete" v-on:click="onDeleteClick"></div>
   </div>
 </template>
 
@@ -34,12 +34,24 @@ export default {
 
   components: { top },
   data() {
-    return {};
+    return {
+      data: {
+        detail: "未知",
+        money: 0,
+        type: "未知",
+        remark: ""
+      }
+    };
+  },
+  
+  mounted() {
+   
+    if (this.$route.query) this.data = this.$route.query;
   },
   methods: {
-    onDeleteClick(){
+    onDeleteClick() {
       //删除之后返回上一页
-     this.$router.back(-1);
+      this.$router.back(-1);
     }
   }
 };

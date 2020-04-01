@@ -37,6 +37,8 @@ export default class ItemController {
             _id: body._id,
             phoneNumber: "13737148529"
         });
+
+       
         res.json(new Message(1, "删除成功!", dlt));
     }
 
@@ -59,7 +61,7 @@ export default class ItemController {
             }, {
                 '$group': {
                     '_id': '$type',
-                    'all': {
+                    'allMoney': {
                         '$sum': '$money'
                     },
                     'items': {
@@ -77,7 +79,7 @@ export default class ItemController {
     @router("post", "/item/findMonth")
     async findMonthe(req: Request, res: Response) {
         let dates = ItemController.getDate(req, res);
-        console.log(dates);
+     
 
         let array = await Item.aggregate([
             {
@@ -88,7 +90,10 @@ export default class ItemController {
                         '$lt': dates["next"]
                     }
                 }
-            }
+            }, {
+                '$sort': {
+                  'date': -1
+                }}
         ]
         );
         res.json(new Message(1, "查询成功!", array));
@@ -100,6 +105,7 @@ export default class ItemController {
     @router("post", "/item/findMonthAndDetail")
     async findMonthAndDetail(req: Request, res: Response) {
         let dates = ItemController.getDate(req, res);
+        let body=req.body;
         let array = await Item.aggregate([
             {
                 '$match': {
@@ -107,7 +113,8 @@ export default class ItemController {
                     'date': {
                         '$gte': dates["now"],
                         '$lt': dates["next"]
-                    }
+                    },
+                    "type":body.type
                 }
             }, {
                 '$group': {

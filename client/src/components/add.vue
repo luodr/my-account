@@ -1,21 +1,5 @@
 <template>
   <div id="add_com">
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <top title="日常账单"></top>
     <div id="recordType">
       <ul>
@@ -112,7 +96,7 @@
         </li>
       </ul>
     </div>
-<div id="inputInfo">
+    <div id="inputInfo">
       <datetimePicker
         class="date_div"
         v-on:calculator_hide="calculator_hide"
@@ -129,7 +113,7 @@
             >{{item}}</li>
 
             <li class="ripple">
-              <img src="../assets/calc_delete.png" class="calc_delete" />
+              <img src="../assets/calc_delete.png" class="calc_delete" @click="clickDelete" />
             </li>
           </ul>
         </div>
@@ -137,7 +121,7 @@
           <ul>
             <li class="ripple" @click="clickCounter($event)">+</li>
             <li class="ripple" @click="clickCounter($event)">-</li>
-            <li class="ripple" id="ok">=</li>
+            <li class="ripple" id="ok" @click="clickOk">{{ok?"确定":"="}}</li>
           </ul>
         </div>
       </div>
@@ -163,7 +147,13 @@ export default {
       money: 0.0,
       isShowCounter: true,
       counterItem: [1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0],
-      countDot: 0
+      countDot: 0,
+      dot: false,
+      nowMoney: 0,
+      nums: [],
+      operators: [],
+      last: 0,
+      ok: true
     };
   },
   methods: {
@@ -188,19 +178,114 @@ export default {
     //键盘点击
     clickCounter(event) {
       var el = event.currentTarget;
-      let num = el.innerHtML;
+      let num = el.innerHTML;
+
+      if (!/^\d+$/.test(num)) {
+        // this.money = this.money + "" + num;
+        switch (num) {
+          case ".":
+            if ("" + this.nowMoney.indexOf(".") == -1) {
+              this.nowMoney = this.nowMoney + ".";
+            }
+            break;
+          case "+":
+            this.pushNum();
+            if (this.last == "+" || this.last == "-") {
+              this.operators.pop();
+            }
+            this.operators.push("+");
+            break;
+          case "-":
+            this.pushNum();
+            if (this.last == "+" || this.last == "-") {
+              this.operators.pop();
+            }
+            this.operators.push("-");
+            break;
+        }
+      } else {
+        if (Number(this.nowMoney) == 0 && Number(num) != 0) {
+          this.nowMoney = num;
+        } else {
+          this.nowMoney = this.nowMoney + "" + num;
+        }
+      }
+      this.last = num;
       //  this.money=this.money+""+num;
+      this.joint();
+    },
+    joint() {  //拼接字符串
+      let index = 0;
+      this.money = "";
+      for (let l = 0; l < this.nums.length; l++) {
+        this.money = this.money + "" + this.nums[l];
+        if (l < this.operators.length)
+          this.money = this.money + this.operators[index++];
+      }
+      if (this.nowMoney != 0) this.money = this.money + "" + this.nowMoney;
+
+      this.isOK();
+    },
+    //点击删除
+    clickDelete() {
+      if (this.nowMoney == 0 || this.nowMoney == "") {
+        if (this.operators.length >= this.nums) {
+          this.operators.pop();
+        } else {
+          this.nowMoney = this.nums.pop();
+        }
+      } else {
+        this.nowMoney = this.nowMoney.substr(0, this.nowMoney.length - 1);
+      }
+      this.joint();
+    },
+    //点击确定
+    clickOk() {
+      this.pushNum();
+      this.money = "";
+      this.isOK();
+      let index = 0;
+      for (let l = 0; l < this.nums.length; l++) {
+        if (l == 0) {
+          this.money = Number(this.nums[l]);
+        } else {
+          switch (this.operators[l - 1]) {
+            case "+":
+              this.money += Number(this.nums[l]);
+              break;
+            case "-":
+              this.money -= Number(this.nums[l]);
+              break;
+          }
+        }
+      }
+      this.nums = [];
+      this.operators = [];
+      this.nowMoney = this.money + "";
+    },
+    pushNum() { //把数字放进数组
+      if (this.nowMoney == 0 || this.nowMoney == "0.") {
+        return;
+      }
+      if (this.last == ".")
+        this.nowMoney = this.nowMoney.substr(0, this.nowMoney.length - 1);
+      this.nums.push(this.nowMoney);
+      this.nowMoney = "";
     },
     calculator_hide() {
       //this.isShowCounter = false;
     },
     calculator_show() {
       this.isShowCounter = true;
+    },
+    isOK() {
+      //是显示确定还是等于
+      if (this.money.indexOf("+") > -1 || this.money.indexOf("-") > -1) {
+        this.ok = false;
+      } else {
+        this.ok = true;
+      }
     }
-  },
-
-  goBack() {
-    // window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
   }
 };
 </script>
@@ -267,7 +352,7 @@ export default {
   width: 100%;
   max-width: 600px;
   height: 5rem;
-  position:absolute;
+  position: absolute;
   bottom: 0;
 
   /* max-height: 50%; */

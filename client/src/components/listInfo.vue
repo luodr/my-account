@@ -4,14 +4,14 @@
       class="info"
       v-for="(item,index) in infos"
       v-bind:key="index"
-      @click="onClick($event)"
+      @click="onClick($event,item)"
     >
       <img src="../assets/trade_ico_exp_12.png" class="icon" />
-
       <div class="info_div">
-        <span class="type">餐饮</span>
-        <span class="date">03-19 18:22 备注</span>
-        <span class="money">2</span>
+        <span class="type">{{item.detail}}</span>
+        <span class="date">{{ transformDate(item.date)}} {{item.remark}}</span>
+        <span v-if="item.type=='支出'" class="money">2</span>
+        <span v-if="item.type=='收入'" class="addMoney">2</span>
       </div>
     </div>
   </div>
@@ -20,38 +20,32 @@
 <script>
 export default {
   name: "listInfo",
+  props: ["infos"],
   components: {},
+
   data() {
     return {
-      infos: [
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {}
-      ]
+      data: null
     };
   },
   methods: {
-    onClick(event) {
-      this.$router.push("/itemInfo");
+    onClick(event, data) {
+      this.$router.push({ path: "/itemInfo", query: data });
+    },
+    transformDate(d) {
+      let date = new Date(d);
+      let month = this.addZero(date.getMonth());
+      let day = this.addZero(date.getDate());
+      let h = this.addZero(date.getHours());
+      let m = this.addZero(date.getMinutes() + 1);
+      return month + "-" + day + "  " + h + ":" + m;
+    },
+    addZero(number) {
+      if (number < 10) {
+        return "0" + number;
+      } else {
+        return number;
+      }
     }
   }
 };
