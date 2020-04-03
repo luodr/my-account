@@ -3,7 +3,7 @@
     <top title="详情"></top>
     <div id="itemeInfo">
       <div class="itemTitleAndMoney">
-        <img src="../assets/wucan.png" class="itemImg" />
+        <img :src="getImgUrl(data.detail)" class="itemImg" />
         <span class="itemTitle">{{data.detail}}</span>
         <span class="itemMoney">{{data.money}}</span>
       </div>
@@ -27,7 +27,6 @@
 
 <script>
 import top from "./top.vue";
-
 export default {
   name: "add_com",
   path: "/add",
@@ -36,22 +35,35 @@ export default {
   data() {
     return {
       data: {
-        detail: "未知",
+        detail: "",
         money: 0,
-        type: "未知",
+        type: "",
         remark: ""
       }
     };
   },
-  
+
   mounted() {
-   
     if (this.$route.query) this.data = this.$route.query;
   },
   methods: {
     onDeleteClick() {
-      //删除之后返回上一页
-      this.$router.back(-1);
+      this.$axios
+        .post("/item/romeve", {
+          _id: this.data._id
+        })
+        .then(result => {
+          // alert("????");
+          if (result.data.code == 1) {
+            this.data = result.data.data;
+            this.$router.back(-1);
+          } else if (result.data.code == 3) {
+            this.$router.push("/login");
+          }
+        });
+    },
+    getImgUrl(type) {
+      if (type) return require("@/assets/icons/" + this.$typeMap.get(type));
     }
   }
 };

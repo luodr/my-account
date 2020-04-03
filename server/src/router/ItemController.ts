@@ -9,13 +9,15 @@ export default class ItemController {
      */
     @router("post", "/item/add")
     async  addItem(req: Request, res: Response) {
+        let user =ItemController.isLogin(req,res);
+        if(!user) return;
         let body = req.body;
         let i = new Item({
             type: body.type,
             detail: body.detail,
             money: body.money,
-            date: new Date(),
-            phoneNumber: "13737148529",
+            date: body.date,
+            phoneNumber: user.phoneNumber,
             remark: body.remark,
             account: body.account
         });
@@ -32,13 +34,15 @@ export default class ItemController {
     */
     @router("post", "/item/romeve")
     async remove(req: Request, res: Response) {
+        let user =ItemController.isLogin(req,res);
+        if(!user) return;
         let body = req.body;
         let dlt = await Item.deleteOne({
             _id: body._id,
-            phoneNumber: "13737148529"
+            phoneNumber: user.phoneNumber
         });
 
-       
+
         res.json(new Message(1, "删除成功!", dlt));
     }
 
@@ -48,11 +52,13 @@ export default class ItemController {
      */
     @router("post", "/item/findMonthAndType")
     async findMonthAndType(req: Request, res: Response) {
+        let user =ItemController.isLogin(req,res);
+        if(!user) return;
         let dates = ItemController.getDate(req, res);
         let array = await Item.aggregate([
             {
                 '$match': {
-                    'phoneNumber': '13737148529',
+                    'phoneNumber': user.phoneNumber,
                     'date': {
                         '$gte': dates["now"],
                         '$lt': dates["next"]
@@ -78,13 +84,15 @@ export default class ItemController {
         */
     @router("post", "/item/findMonth")
     async findMonthe(req: Request, res: Response) {
+        let user =ItemController.isLogin(req,res);
+        if(!user) return;
         let dates = ItemController.getDate(req, res);
-     
+
 
         let array = await Item.aggregate([
             {
                 '$match': {
-                    'phoneNumber': '13737148529',
+                    'phoneNumber': user.phoneNumber,
                     'date': {
                         '$gte': dates["now"],
                         '$lt': dates["next"]
@@ -92,8 +100,9 @@ export default class ItemController {
                 }
             }, {
                 '$sort': {
-                  'date': -1
-                }}
+                    'date': -1
+                }
+            }
         ]
         );
         res.json(new Message(1, "查询成功!", array));
@@ -104,17 +113,19 @@ export default class ItemController {
      */
     @router("post", "/item/findMonthAndDetail")
     async findMonthAndDetail(req: Request, res: Response) {
+        let user =ItemController.isLogin(req,res);
+        if(!user) return;
         let dates = ItemController.getDate(req, res);
-        let body=req.body;
+        let body = req.body;
         let array = await Item.aggregate([
             {
                 '$match': {
-                    'phoneNumber': '13737148529',
+                    'phoneNumber': user.phoneNumber,
                     'date': {
                         '$gte': dates["now"],
                         '$lt': dates["next"]
                     },
-                    "type":body.type
+                    "type": body.type
                 }
             }, {
                 '$group': {
@@ -134,10 +145,19 @@ export default class ItemController {
 
     //获取时间
     static getDate(req, res) {
+        let user = req.session.user;
+        if (!user) res.json(new Message(0, "请重新登录!", null));
         let body = req.body;
         if (!body.year || !body.month) {
             res.json(new Message(0, "请输入正确的时间!", null));
         }
         return DateUtil.nextMonth(Number(body.year), Number(body.month));
+    }
+    static isLogin(req, res) {
+
+        if (!req.session || !req.session.user) {
+            res.json(new Message(3, "请重新登录!", null));
+        }
+        return req.session.user;
     }
 }

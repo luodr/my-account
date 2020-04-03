@@ -12,7 +12,10 @@ import App from './App.vue'
 Vue.config.productionTip = false
 
 import router from './router/router'
+import typeMap from "./config/iconsType"
 
+Vue.prototype.$typeMap = typeMap;
+console.log(typeMap);
 
 
 
@@ -28,3 +31,4 @@ new Vue({
 
 // import r from './js/rem.js';
 // r();
+

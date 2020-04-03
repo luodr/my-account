@@ -1,20 +1,27 @@
 <template>
   <!--报表-->
   <div id="report">
-    <div id="report_view"></div>
+    <div id="report_view" ref="report_view"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "test",
+  name: "line",
   path: "/test",
   components: {},
+  props: ["data", "startDraw"],
+  watch: {
+    
+    startDraw: function() {
+      this.draw();
+    }
+  },
   mounted() {
     this.draw();
   },
   data() {
-    return { data: null };
+    return {};
   },
   methods: {
     add: function() {
@@ -27,12 +34,17 @@ export default {
     draw: function() {
       // 基于准备好的dom，初始化echarts实例
       let days = [];
-      let date=new Date();
-      
-      for (let i = 0; i < this.getDays(date.getFullYear(),date.getMonth()+1); i++) {
+      let date = new Date();
+
+      for (
+        let i = 0;
+        i < this.getDays(date.getFullYear(), date.getMonth() + 1);
+        i++
+      ) {
         days.push(i + 1);
+        this.data.push(0);
       }
-      var myChart = this.$echarts.init(document.getElementById("report_view"));
+      var myChart = this.$echarts.init(this.$refs.report_view);
       let option = {
         color: ["#3398DB"],
         tooltip: {
@@ -76,11 +88,8 @@ export default {
       myChart.setOption(option);
     }
   },
-  watch: {
-    $route(to, from) {
-      this.$router.go(0);
-    }
-  }
+  
+  
 };
 </script>
 

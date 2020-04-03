@@ -49,6 +49,7 @@ export default {
     add: function() {
       this.$router.push("/add");
     },
+    
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
@@ -61,7 +62,7 @@ export default {
           month: date.getMonth()+1
         })
         .then(result => {
-          if (result.data.code) {
+          if (result.data.code==1) {
             this.data = result.data.data;
             if (this.data) {
                this.expend=0;
@@ -74,6 +75,8 @@ export default {
                 }
               }
             }
+          }else if(result.data.code==3){
+            this.$router.push("/login");
           }
         });
     }

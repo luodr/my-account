@@ -1,7 +1,7 @@
 <template>
   <!--报表-->
   <div id="cake">
-    <div id="cake_view"></div>
+    <div id="cake_view" ref="cake_view"></div>
   </div>
 </template>
 
@@ -13,13 +13,14 @@ export default {
   mounted() {
     
   },
-  props:["data"],
+  props:["data","startDraw"],
   watch:{
-    data:function name() {
-  
-      
-      this.draw();
-    }
+   
+   startDraw:function (){
+     console.log("??????????");
+     
+     this.draw();
+   }
   },
   data() {
     return {  };
@@ -30,7 +31,7 @@ export default {
     },
     draw: function() {
       // 基于准备好的dom，初始化echarts实例
-      var myChart = this.$echarts.init(document.getElementById("cake_view"));
+      var myChart = this.$echarts.init(this.$refs.cake_view);
       let option = {
         series: [
           {

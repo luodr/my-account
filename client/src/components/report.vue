@@ -32,8 +32,15 @@
         </li>
       </ul>
     </div>
-    <cake :data=" cake"></cake>
-
+    <br />
+    <div class="show_reportType_div">
+      <ul>
+        <li class="bz" :class="{click_color:isCake}" @click="clickCakeType(true)">饼图</li>
+        <li class="zz" :class="{click_color:isColumnar}" @click="clickCakeType(false)">柱状</li>
+      </ul>
+    </div>
+    <l v-if="!isCake" :data="lines" :startDraw="startDrawline"></l>
+    <cake v-if="isCake" :data="cake" :startDraw="startDrawCake"></cake>
     <div class="hr_div"></div>
     <listInfo></listInfo>
   </div>
@@ -41,13 +48,14 @@
 
 <script>
 import top from "./top.vue";
+import l from "./line.vue";
 import cake from "./cake.vue";
 import listInfo from "./listInfo.vue";
 export default {
   name: "report_com",
   path: "/report",
 
-  components: { top, cake, listInfo },
+  components: { l, top, cake, listInfo },
   mounted() {
     ///
     let date = new Date();
@@ -64,7 +72,14 @@ export default {
       surplus: "",
       incomes: "",
       consume: "report_moneyNow",
-      cake: []
+      cake: [],
+      isCake: true,
+      isColumnar: false,
+      incomeArray: [],
+      expendArray: [],
+      lines: [],
+      startDrawCake: false,
+      startDrawline: false
     };
   },
   methods: {
@@ -78,18 +93,22 @@ export default {
           month
         })
         .then(result => {
-          if (result.data.code) {
+          if (result.data.code == 1) {
             this.data = result.data.data;
             for (let items of this.data) {
               if (items._id == "收入") {
                 this.income = items.allMoney;
                 this.getClassify(this.incomeMap, items.items);
+                this.incomeArray = items.items;
               } else {
                 this.expend = items.allMoney;
+                this.expendArray = items.items;
                 this.getClassify(this.expendMap, items.items);
               }
             }
             this.clickExpenditure();
+          } else if (result.data.code == 3) {
+            this.$router.push("/login");
           }
         });
     },
@@ -116,7 +135,10 @@ export default {
       this.incomes = "";
       this.surplus = "";
       this.cake = this.mapToArray(this.expendMap);
-     
+      this.lines = this.incomeArray;
+      //重新画图
+      this.startDrawCake = !this.startDrawCake;
+      this.startDrawline = !this.startDrawline;
     },
     //收入
     clickIncome() {
@@ -124,6 +146,18 @@ export default {
       this.incomes = "report_moneyNow";
       this.surplus = "";
       this.cake = this.mapToArray(this.incomeMap);
+      this.lines = this.expendArray;
+      this.startDrawCake = !this.startDrawCake;
+      this.startDrawline = !this.startDrawline;
+    },
+    clickCakeType(is) {
+      this.isCake = is;
+      this.isColumnar = !is;
+      
+        this.startDrawCake = !this.startDrawCake;
+       console.log("?????");
+       
+     
     },
     //转账
     clickSurplus() {
@@ -186,5 +220,21 @@ export default {
 .hr_div {
   width: 100%;
   border-bottom: #b1abb8 solid 1px;
+}
+.show_reportType_div {
+  width: 2.4rem;
+  height: 25px;
+  color: #7f7e7e;
+  text-align: center;
+  margin: 0 auto;
+}
+.show_reportType_div ul li {
+  list-style: none;
+  float: left;
+  width: 1.2rem;
+}
+.click_color {
+  color: red;
+  border-bottom: red solid 1px;
 }
 </style>

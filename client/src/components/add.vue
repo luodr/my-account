@@ -11,97 +11,24 @@
     </div>
     <br />
     <div id="money_div">
-      <span class="money_type">{{type}}</span>
+      <span class="money_type">{{detail}}</span>
       <span class="money_money">{{money}}</span>
     </div>
     <br />
     <div id="types">
       <ul>
-        <li>
+        <li v-for="(item,index) in icons" v-bind:key="index" @click="clickType(item.detail)">
           <div>
-            <img src="../assets/wucan.png" />
+            <img :src="getImgUrl(item.icon)" />
+
             <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
-          </div>
-        </li>
-        <li>
-          <div>
-            <img src="../assets/wucan.png" />
-            <br />
-            <span class="typeIconName">晚餐</span>
+            <span class="typeIconName">{{item.detail}}</span>
           </div>
         </li>
       </ul>
     </div>
     <div id="inputInfo">
-      <datetimePicker
-        class="date_div"
-        v-on:calculator_hide="calculator_hide"
-        v-on:calculator_show="calculator_show"
-      ></datetimePicker>
+      <datetimePicker class="date_div" v-on:timestamp="getdatetimePickerInfo"></datetimePicker>
       <div class="counter" v-if="isShowCounter">
         <div class="counter_left">
           <ul>
@@ -132,6 +59,8 @@
 <script>
 import datetimePicker from "./datetimePicker.vue";
 import top from "./top.vue";
+import icons from "../config/icon";
+
 
 export default {
   name: "add_com",
@@ -143,7 +72,8 @@ export default {
       expenditure: true,
       income: false,
       transfer: false,
-      type: "餐饮",
+      detail: "餐饮",
+      type: "支出",
       money: 0.0,
       isShowCounter: true,
       counterItem: [1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0],
@@ -151,9 +81,12 @@ export default {
       dot: false,
       nowMoney: 0,
       nums: [],
+      icons: icons.expend,
       operators: [],
       last: 0,
-      ok: true
+      ok: true,
+      timestamp: new Date().getTime(),
+      remark: ""
     };
   },
   methods: {
@@ -162,18 +95,30 @@ export default {
       this.expenditure = true;
       this.income = false;
       this.transfer = false;
+      this.type = "支出";
+      this.icons = icons.expend;
+    },
+    getImgUrl(icon) {
+      return require("@/assets/icons/" + icon);
     },
     //收入
     clickIncome() {
       this.expenditure = false;
       this.income = true;
       this.transfer = false;
+      this.icons = icons.income;
+      this.type = "收入";
     },
     //转账
     clickTransfer() {
-      this.expenditure = false;
-      this.income = false;
-      this.transfer = true;
+      //暂时不需要转账记录
+      // this.expenditure = false;
+      // this.income = false;
+      // this.transfer = true;
+      // this.type = "转账";
+    },
+    clickType(detail) {
+      this.detail = detail;
     },
     //键盘点击
     clickCounter(event) {
@@ -184,8 +129,12 @@ export default {
         // this.money = this.money + "" + num;
         switch (num) {
           case ".":
-            if ("" + this.nowMoney.indexOf(".") == -1) {
-              this.nowMoney = this.nowMoney + ".";
+            if (this.nowMoney.toString().indexOf(".") == -1) {
+              if (this.nowMoney == 0 || this.nowMoney == "") {
+                this.nowMoney = 0 + ".";
+              } else {
+                this.nowMoney = this.nowMoney + ".";
+              }
             }
             break;
           case "+":
@@ -204,17 +153,34 @@ export default {
             break;
         }
       } else {
-        if (Number(this.nowMoney) == 0 && Number(num) != 0) {
+        //不能超过小数点后两位
+        if (
+          this.nowMoney.toString().indexOf(".") > -1 &&
+          this.nowMoney.toString().split(".")[1].length >= 2
+        ) {
+          return;
+        }
+        if (
+          this.nowMoney != "0." &&
+          Number(this.nowMoney) == 0 &&
+          Number(num) != 0
+        ) {
           this.nowMoney = num;
         } else {
-          this.nowMoney = this.nowMoney + "" + num;
+          if (this.nowMoney == "0") {
+            this.nowMoney = Number(this.nowMoney + num);
+          } else {
+            this.nowMoney = this.nowMoney + "" + num;
+          }
         }
       }
       this.last = num;
+
       //  this.money=this.money+""+num;
       this.joint();
     },
-    joint() {  //拼接字符串
+    joint() {
+      //拼接字符串
       let index = 0;
       this.money = "";
       for (let l = 0; l < this.nums.length; l++) {
@@ -222,8 +188,9 @@ export default {
         if (l < this.operators.length)
           this.money = this.money + this.operators[index++];
       }
-      if (this.nowMoney != 0) this.money = this.money + "" + this.nowMoney;
-
+      // if (this.nowMoney != 0){
+      this.money = this.money + "" + this.nowMoney;
+      //}
       this.isOK();
     },
     //点击删除
@@ -262,15 +229,20 @@ export default {
       this.nums = [];
       this.operators = [];
       this.nowMoney = this.money + "";
+
+      if (this.ok && this.money != 0) {
+        this.addRequest();
+      }
     },
-    pushNum() { //把数字放进数组
+    pushNum() {
+      //把数字放进数组
       if (this.nowMoney == 0 || this.nowMoney == "0.") {
         return;
       }
       if (this.last == ".")
         this.nowMoney = this.nowMoney.substr(0, this.nowMoney.length - 1);
       this.nums.push(this.nowMoney);
-      this.nowMoney = "";
+      this.nowMoney = 0;
     },
     calculator_hide() {
       //this.isShowCounter = false;
@@ -285,6 +257,30 @@ export default {
       } else {
         this.ok = true;
       }
+    },
+    getdatetimePickerInfo(timestamp, remark) {
+      this.timestamp = timestamp;
+      this.remark = remark;
+    },
+    addRequest() {
+      this.$axios
+        .post("/item/add", {
+          type: this.type,
+          detail: this.detail,
+          money: this.money,
+          date: this.timestamp,
+          // phoneNumber: this.$user.phoneNumber,
+          remark: this.remark
+        })
+        .then(result => {
+          // alert("????");
+          if (result.data.code == 1) {
+            this.data = result.data.data;
+            this.$router.back(-1);
+          } else if (result.data.code == 3) {
+            this.$router.push("/login");
+          }
+        });
     }
   }
 };

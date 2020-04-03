@@ -12,7 +12,9 @@
         type="text"
         placeholder="写点啥备注下"
         class="remark"
-        @blur="$emit('calculator_show')"
+        v-model="remark"
+        maxlength="13"
+        @blur="blur"
         @focus="$emit('calculator_hide')"
       />
     </div>
@@ -59,7 +61,7 @@ import "../js/jquery.selector-px.js";
 
 export default {
   data() {
-    return { date: "今天", timestamp: new Date().getTime() };
+    return { date: "今天", timestamp: new Date().getTime(),remark:"" };
   },
   props: {
     height: {
@@ -82,8 +84,12 @@ export default {
     },
     initCss() {
       // $(".sp-date").css({ height: this.height, width: this.width + "%" });
+    },
+    blur(){
+       this.$emit("timestamp",this.timestamp,this.remark)
     }
   },
+
   mounted() {
     let year = new Date().getFullYear();
     let month = this.time2str(new Date().getMonth() + 1);
@@ -121,8 +127,10 @@ export default {
         this.timestamp = Date.parse(
           d1 + "/" + d2 + "/" + d3 + "  " + d4 + ":" + d5
         );
+          this.$emit("timestamp",this.timestamp,this.remark)
       }
     });
+    
   },
   activated() {}
 };

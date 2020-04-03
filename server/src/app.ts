@@ -19,10 +19,12 @@ class App {
         this.app.use(express.json());
         //支持 application/x-www-form-urlencoded 发送数据
         this.app.use(urlencoded({ extended: false }));
+        //允许跨域
+        this.Access();
         //设置 seesion
         this.app.use(session({
             secret: 'you see see money',
-            cookie: {maxAge: 1800000}, 
+            // cookie: {maxAge: 1800000000000000000}, 
             rolling: true,
             resave: true,
             saveUninitialized: true
@@ -47,6 +49,18 @@ class App {
                 require(routers + "/" + file);
             }
         });
+    }
+    //设置允许跨域访问该服务.
+    public Access() {
+        this.app.all('*', function (req, res, next) {
+            res.header('Access-Control-Allow-Origin', '*');
+            //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
+            res.header('Access-Control-Allow-Headers', 'Content-Type');
+            res.header('Access-Control-Allow-Methods', '*');
+            res.header('Content-Type', 'application/json;charset=utf-8');
+            next();
+        });
+      
     }
 }
 new App().app.listen(3000);
