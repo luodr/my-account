@@ -7,43 +7,48 @@
 
 <script>
 export default {
-  name: "line",
-  path: "/test",
+  name: "columnar",
   components: {},
-  props: ["data", "startDraw"],
+  props: ["data"],
   watch: {
-    
-    startDraw: function() {
+    data: function() {
+      this.datas = [];
       this.draw();
     }
   },
   mounted() {
     this.draw();
+    this.$on("columnarRraw", res => {
+      this.draw();
+    });
   },
   data() {
-    return {};
+    return { datas: [] };
   },
   methods: {
-    add: function() {
-      this.$router.push("/");
-    },
     getDays: function(year, month) {
       var d = new Date(year, month, 0);
       return d.getDate();
     },
     draw: function() {
+     
       // 基于准备好的dom，初始化echarts实例
       let days = [];
       let date = new Date();
-
+      this.datas = [];
       for (
         let i = 0;
         i < this.getDays(date.getFullYear(), date.getMonth() + 1);
         i++
       ) {
         days.push(i + 1);
-        this.data.push(0);
+        this.datas.push(0);
       }
+      this.data.forEach(value => {
+       let d=new Date(value.date);
+     
+       this.datas[d.getDate()-1]+=value.money;
+      });
       var myChart = this.$echarts.init(this.$refs.report_view);
       let option = {
         color: ["#3398DB"],
@@ -79,7 +84,7 @@ export default {
           {
             type: "bar",
             barWidth: "60%",
-            data: [10, 52, 200, 334, 390, 330, 220]
+            data:this.datas
           }
         ]
       };
@@ -87,9 +92,7 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     }
-  },
-  
-  
+  }
 };
 </script>
 

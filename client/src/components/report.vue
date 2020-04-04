@@ -2,7 +2,18 @@
   <!--报表-->
   <div id="report_com">
     <top title="报表"></top>
-    <div class="report_option">4.1-4.30</div>
+    <div class="report_option">
+      <div class="block">
+        <el-date-picker
+          v-model="choose"
+          type="month"
+          align="center"
+          clear-icon="false"
+          placeholder="选择月"
+          :editable="false"
+        ></el-date-picker>
+      </div>
+    </div>
     <div class="report_info">
       <ul>
         <li>
@@ -39,8 +50,8 @@
         <li class="zz" :class="{click_color:isColumnar}" @click="clickCakeType(false)">柱状</li>
       </ul>
     </div>
-    <l v-if="!isCake" :data="lines" :startDraw="startDrawline"></l>
-    <cake v-if="isCake" :data="cake" :startDraw="startDrawCake"></cake>
+    <columnar v-if="!isCake" :data="columnars"></columnar>
+    <cake v-if="isCake" :data="cake"></cake>
     <div class="hr_div"></div>
     <listInfo></listInfo>
   </div>
@@ -48,20 +59,27 @@
 
 <script>
 import top from "./top.vue";
-import l from "./line.vue";
+import columnar from "./columnar.vue";
 import cake from "./cake.vue";
 import listInfo from "./listInfo.vue";
 export default {
   name: "report_com",
   path: "/report",
 
-  components: { l, top, cake, listInfo },
+  components: { columnar, top, cake, listInfo },
   mounted() {
     ///
-    let date = new Date();
-    this.getDate(date.getFullYear(), date.getMonth() + 1);
+    // let date = new Date();
+    // this.choose = date.getFullYear() + "-" + (date.getMonth() + 1);
+    this.getDate(this.choose.getFullYear(), this.choose.getMonth() + 1);
   },
   created() {},
+  watch: {
+    choose: function() {
+      this.getDate(this.choose.getFullYear(), this.choose.getMonth() + 1);
+    }
+  },
+
   data() {
     return {
       data: null,
@@ -77,9 +95,10 @@ export default {
       isColumnar: false,
       incomeArray: [],
       expendArray: [],
-      lines: [],
+      columnars: [],
       startDrawCake: false,
-      startDrawline: false
+      startDrawcolumnar: false,
+      choose: new Date()
     };
   },
   methods: {
@@ -95,6 +114,11 @@ export default {
         .then(result => {
           if (result.data.code == 1) {
             this.data = result.data.data;
+            //格式化数据
+            this.income = 0;
+            this.expend = 0;
+            this.incomeArray=[];
+            this.expendArray=[];
             for (let items of this.data) {
               if (items._id == "收入") {
                 this.income = items.allMoney;
@@ -135,10 +159,7 @@ export default {
       this.incomes = "";
       this.surplus = "";
       this.cake = this.mapToArray(this.expendMap);
-      this.lines = this.incomeArray;
-      //重新画图
-      this.startDrawCake = !this.startDrawCake;
-      this.startDrawline = !this.startDrawline;
+      this.columnars = this.expendArray;
     },
     //收入
     clickIncome() {
@@ -146,18 +167,17 @@ export default {
       this.incomes = "report_moneyNow";
       this.surplus = "";
       this.cake = this.mapToArray(this.incomeMap);
-      this.lines = this.expendArray;
-      this.startDrawCake = !this.startDrawCake;
-      this.startDrawline = !this.startDrawline;
+      this.columnars = this.incomeArray;
     },
     clickCakeType(is) {
       this.isCake = is;
       this.isColumnar = !is;
-      
-        this.startDrawCake = !this.startDrawCake;
-       console.log("?????");
-       
-     
+
+      if (this.isCake) {
+        this.$emit("cakeRraw");
+      } else {
+        this.$emit("columnarRraw");
+      }
     },
     //转账
     clickSurplus() {
@@ -176,11 +196,13 @@ export default {
   margin: 0 auto;
 }
 .report_option {
-  width: 100%;
-  height: 0.5rem;
+  /* width: 10%; */
+  height: 1rem;
   /* background: #f5f5f7; */
   text-align: center;
   line-height: 0.5rem;
+  margin: 0 auto;
+
   /* border-bottom: #f5f5f7 solid 1px; */
   /* border-top: #f5f5f7 solid 1px; */
 }
@@ -206,7 +228,7 @@ export default {
 }
 
 .report_moneyNow {
-  color: red;
+  color: #9378fb;
   font-size: 0.3rem;
 }
 .report_mone {
@@ -233,8 +255,15 @@ export default {
   float: left;
   width: 1.2rem;
 }
+.el-input__inner {
+  border: none;
+}
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 2.5rem;
+}
 .click_color {
-  color: red;
-  border-bottom: red solid 1px;
+  color: #9378fb;
+  border-bottom: #9378fb solid 1px;
 }
 </style>

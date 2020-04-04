@@ -1,5 +1,9 @@
 <template>
   <div id="main">
+    <div class="container">
+     
+    
+    </div>
     <div id="banner">
       <div class="content">
         <div class="banner_top">

@@ -36,7 +36,7 @@ export default {
   mounted() {},
   methods: {
     onClick(event, data) {
-      console.log(data);
+     
 
       this.$router.push({ path: "/itemInfo", query: data });
     },

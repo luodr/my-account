@@ -11,19 +11,19 @@ export default {
   path: "/test",
   components: {},
   mounted() {
-    
+    this.draw();
+    this.$on("cakeRraw", res => {
+      this.draw();
+    });
   },
-  props:["data","startDraw"],
-  watch:{
-   
-   startDraw:function (){
-     console.log("??????????");
-     
-     this.draw();
-   }
+  props: ["data", "startDraw"],
+  watch: {
+    data: function() {
+      this.draw();
+    }
   },
   data() {
-    return {  };
+    return {};
   },
   methods: {
     add: function() {
@@ -67,7 +67,6 @@ export default {
 </script>
 
 <style>
-
 #cake_view {
   margin: 0 auto;
   width: 100%;

@@ -3,6 +3,7 @@
     <transition :name="transitionName">
       <router-view :key="$route.fullPath"></router-view>
     </transition>
+    
   </div>
 </template>
 
@@ -19,13 +20,13 @@ export default {
     };
   },
   watch: {
-   $route(to, from) {
+    $route(to, from) {
       //如果to索引大于from索引,判断为前进状态,反之则为后退状态
-      if(to.meta.index > from.meta.index){
+      if (to.meta.index > from.meta.index) {
         //设置动画名称
-        this.transitionName = 'slide-left';
-      }else{
-        this.transitionName = 'slide-right';
+        this.transitionName = "slide-left";
+      } else {
+        this.transitionName = "slide-right";
       }
     }
   }

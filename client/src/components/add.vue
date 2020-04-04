@@ -61,7 +61,6 @@ import datetimePicker from "./datetimePicker.vue";
 import top from "./top.vue";
 import icons from "../config/icon";
 
-
 export default {
   name: "add_com",
   path: "/add",
@@ -97,6 +96,7 @@ export default {
       this.transfer = false;
       this.type = "支出";
       this.icons = icons.expend;
+      this.detail = "餐饮";
     },
     getImgUrl(icon) {
       return require("@/assets/icons/" + icon);
@@ -108,6 +108,7 @@ export default {
       this.transfer = false;
       this.icons = icons.income;
       this.type = "收入";
+      this.detail = "薪资";
     },
     //转账
     clickTransfer() {
@@ -305,10 +306,7 @@ export default {
   font-size: 0.3rem;
   text-align: center;
 }
-.click_color {
-  color: red;
-  border-bottom: red solid 1px;
-}
+
 #money_div {
   width: 100%;
   background: #819bfa;

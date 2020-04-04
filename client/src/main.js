@@ -14,9 +14,11 @@ Vue.config.productionTip = false
 import router from './router/router'
 import typeMap from "./config/iconsType"
 
+// import 'element-ui/lib/theme-chalk/index.css';
 Vue.prototype.$typeMap = typeMap;
-console.log(typeMap);
+import { DatePicker} from 'element-ui';
 
+Vue.component(DatePicker.name, DatePicker);
 
 
 new Vue({
