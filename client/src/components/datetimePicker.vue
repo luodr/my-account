@@ -2,12 +2,15 @@
   <div class="datatime-picker-wrap">
     <div class="date_line">
       <div class="sp-date">
-        <img src="../assets/date.png" class="date_icon" />
+        <img :src="getImgUrl('date.png')" class="date_icon" />
         <span>&nbsp;{{date}}</span>
       </div>
+      <!-- <div class="el-date-editor el-input el-input--prefix el-input--suffix el-date-editor--date" type="date">3123</div> -->
+      <!-- <el-date-picker v-model="value" style="width:100px" :size="mini" type="date" :editable="false" placeholder="选择日期"></el-date-picker> -->
+      <!-- <el-date-picker v-model="timestamp" style="width:3rem" :editable=false  :picker-options={disabledDate:true} type="datetime" placeholder="选择日期时间"></el-date-picker> -->
       <div class="jiange" style="border-right: black solid 1px;"></div>
       <div class="jiange"></div>
-      <img src="../assets/remark.png" class="date_icon" />
+      <img :src="getImgUrl('remark.png')"  class="date_icon" />
       <input
         type="text"
         placeholder="写点啥备注下"
@@ -58,10 +61,14 @@
 <script>
 import $ from "jquery";
 import "../js/jquery.selector-px.js";
-
 export default {
   data() {
-    return { date: "今天", timestamp: new Date().getTime(),remark:"" };
+    return {
+      date: "今天",
+      timestamp: new Date().getTime(),
+      remark: "",
+      value: null
+    };
   },
   props: {
     height: {
@@ -85,8 +92,11 @@ export default {
     initCss() {
       // $(".sp-date").css({ height: this.height, width: this.width + "%" });
     },
-    blur(){
-       this.$emit("timestamp",this.timestamp,this.remark)
+    getImgUrl(name) {
+      return require("@/assets/icons/" + name);
+    },
+    blur() {
+      this.$emit("timestamp", this.timestamp, this.remark);
     }
   },
 
@@ -127,10 +137,9 @@ export default {
         this.timestamp = Date.parse(
           d1 + "/" + d2 + "/" + d3 + "  " + d4 + ":" + d5
         );
-          this.$emit("timestamp",this.timestamp,this.remark)
+        this.$emit("timestamp", this.timestamp, this.remark);
       }
     });
-    
   },
   activated() {}
 };

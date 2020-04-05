@@ -8,7 +8,7 @@
           <h5>{{title}}</h5>
         </div>
         <div style="position:absolute;top:0px;float:left;text-align:left;width:100%">
-          <img src="../assets/icon_back_black.png" class="go_back" @click="onBack" />
+          <img :src="icon_back_black" class="go_back" @click="onBack" />
         </div>
       </div>
     </div>
@@ -16,13 +16,14 @@
 </template>
 
 <script>
+let icon_back_black=require("@/assets/icons/icon_back_black.png")
 export default {
   name: "top",
   components: {},
   props: ["title"],
   mounted() {},
   data() {
-    return { data: null };
+    return { data: null,icon_back_black };
   },
   methods: {
     onBack() {

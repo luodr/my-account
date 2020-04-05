@@ -128,7 +128,7 @@ export default {
   /* margin-top:-50px; */
 
   margin-left: -25px;
-  background: url(../assets/delete1.png);
+  background: url(../assets/icons/delete1.png);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 999;

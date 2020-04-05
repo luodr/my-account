@@ -52,8 +52,9 @@
     </div>
     <columnar v-if="!isCake" :data="columnars"></columnar>
     <cake v-if="isCake" :data="cake"></cake>
-    <div class="hr_div"></div>
-    <listInfo></listInfo>
+    <div class="hr_div" v-if="isCake" ></div>
+    <cakelist v-if="isCake" :cakeMap="this.cakeMap" :allMoney="allMoney"></cakelist>
+    <columnarlist v-if="!isCake" :columnarMap="this.columnarMap" ></columnarlist>
   </div>
 </template>
 
@@ -61,16 +62,14 @@
 import top from "./top.vue";
 import columnar from "./columnar.vue";
 import cake from "./cake.vue";
-import listInfo from "./listInfo.vue";
+import cakelist from "./cakelist";
+import columnarlist from "./columnarlist";
 export default {
   name: "report_com",
   path: "/report",
 
-  components: { columnar, top, cake, listInfo },
+  components: { columnar, top, cake, cakelist, columnarlist },
   mounted() {
-    ///
-    // let date = new Date();
-    // this.choose = date.getFullYear() + "-" + (date.getMonth() + 1);
     this.getDate(this.choose.getFullYear(), this.choose.getMonth() + 1);
   },
   created() {},
@@ -95,13 +94,24 @@ export default {
       isColumnar: false,
       incomeArray: [],
       expendArray: [],
+      cakeMap: null,
       columnars: [],
-      startDrawCake: false,
-      startDrawcolumnar: false,
-      choose: new Date()
+      choose: new Date(),
+      allMoney: 0,
+      columnarMap: new Map()
     };
   },
   methods: {
+    //重置数据
+    resetData() {
+      this.income = 0;
+      this.expend = 0;
+      this.incomeArray = [];
+      this.expendArray = [];
+      this.incomeMap = new Map();
+      this.expendMap = new Map();
+      this.columnarMap = new Map();
+    },
     //获取数据
     getDate(year, month) {
       this.incomeMap.clear();
@@ -114,20 +124,19 @@ export default {
         .then(result => {
           if (result.data.code == 1) {
             this.data = result.data.data;
-            //格式化数据
-            this.income = 0;
-            this.expend = 0;
-            this.incomeArray=[];
-            this.expendArray=[];
+            //重置数据
+            this.resetData();
             for (let items of this.data) {
               if (items._id == "收入") {
                 this.income = items.allMoney;
                 this.getClassify(this.incomeMap, items.items);
                 this.incomeArray = items.items;
+                this.setColumnarMap(items.items);
               } else {
                 this.expend = items.allMoney;
                 this.expendArray = items.items;
                 this.getClassify(this.expendMap, items.items);
+                this.setColumnarMap(items.items);
               }
             }
             this.clickExpenditure();
@@ -141,8 +150,13 @@ export default {
         if (map.has(item.detail)) {
           let l = map.get(item.detail);
           l.value += item.money;
+          l.items.push(item);
         } else {
-          map.set(item.detail, { name: item.detail, value: item.money });
+          map.set(item.detail, {
+            name: item.detail,
+            value: item.money,
+            items: [item]
+          });
         }
       }
     },
@@ -160,6 +174,8 @@ export default {
       this.surplus = "";
       this.cake = this.mapToArray(this.expendMap);
       this.columnars = this.expendArray;
+      this.allMoney = this.expend;
+      this.setCakeMap();
     },
     //收入
     clickIncome() {
@@ -168,6 +184,9 @@ export default {
       this.surplus = "";
       this.cake = this.mapToArray(this.incomeMap);
       this.columnars = this.incomeArray;
+      this.setCakeMap();
+
+      this.allMoney = this.income;
     },
     clickCakeType(is) {
       this.isCake = is;
@@ -179,11 +198,39 @@ export default {
         this.$emit("columnarRraw");
       }
     },
+    setCakeMap() {
+      if (this.consume != "") {
+        this.cakeMap = this.expendMap;
+      } else {
+        this.cakeMap = this.incomeMap;
+      }
+    },
     //转账
     clickSurplus() {
       // this.consume = "";
       // this.incomes = "";
       // this.surplus = "report_moneyNow";
+    },
+    setColumnarMap(array) {
+      for (let item of array) {
+        let d = new Date(item.date);
+        let income = 0;
+        let expend = 0;
+        item.type == "收入" ? (income = item.money) : (expend = item.money);
+        if (this.columnarMap.has(d.getDate())) {
+          let obj = this.columnarMap.get(d.getDate());
+          obj.income += income;
+          obj.expend += expend;
+          obj.items.push(item);
+        } else {
+          this.columnarMap.set(d.getDate(), {
+            income,
+            expend,
+            month:d.getMonth()+1,
+            items: [item]
+          });
+        }
+      }
     }
   }
 };
@@ -194,6 +241,8 @@ export default {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+
+  height: 100vh;
 }
 .report_option {
   /* width: 10%; */

@@ -40,7 +40,7 @@
             >{{item}}</li>
 
             <li class="ripple">
-              <img src="../assets/calc_delete.png" class="calc_delete" @click="clickDelete" />
+              <img :src="calc_delete" class="calc_delete" @click="clickDelete" />
             </li>
           </ul>
         </div>
@@ -61,6 +61,7 @@ import datetimePicker from "./datetimePicker.vue";
 import top from "./top.vue";
 import icons from "../config/icon";
 
+let calc_delete = require("@/assets/icons/calc_delete.png");
 export default {
   name: "add_com",
   path: "/add",
@@ -79,6 +80,7 @@ export default {
       countDot: 0,
       dot: false,
       nowMoney: 0,
+      calc_delete,
       nums: [],
       icons: icons.expend,
       operators: [],

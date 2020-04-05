@@ -16,13 +16,14 @@ export default class LoginController {
         //验证码
         let securityCode = Math.random().toFixed(6).substr(2);
         // securityCode = "026936";
-        // let msg: any = await SendSms(PhoneNumber, securityCode);
-        let msg = { Code: "OK" };
+        let msg: any = await SendSms(PhoneNumber, securityCode);
+        // let msg = { Code: "OK" };
         console.log("你的验证码是:" + securityCode);
         if (msg.Code == "OK") {
             //把验证码和手机号保存到seesion
             req.session.securityCode = securityCode;
             req.session.PhoneNumber = PhoneNumber;
+            await req.session.save(() => { });
             res.json(new Message(1, "发送成功!", null));
         } else {
             res.json(new Message(0, "发送失败,请稍后重试", null));
@@ -45,6 +46,7 @@ export default class LoginController {
                 user = await user.save();
             }
             req.session.user = user;
+            await req.session.save(() => { });
             res.json(new Message(1, "登录成功", {
                 phoneNumber: user.phoneNumber,
                 budget: user.budget,

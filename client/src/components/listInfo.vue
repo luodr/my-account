@@ -20,7 +20,7 @@
 </template>
 
 <script>
-// import vue from "vue";
+
 
 export default {
   name: "listInfo",
@@ -101,7 +101,7 @@ export default {
 }
 .type {
   /* line-height: 0.6rem; */
-  padding-top: 7px;
+  padding-top: 0.15rem;
   position: relative;
   float: left;
 }

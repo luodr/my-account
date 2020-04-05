@@ -1,15 +1,12 @@
 <template>
   <div id="main">
-    <div class="container">
-     
-    
-    </div>
+    <div class="container"></div>
     <div id="banner">
       <div class="content">
         <div class="banner_top">
           <div>
             <router-link to="/report">
-              <img src="../assets/baobiao.png" class="baobiao_icon" />
+              <img :src="baobiao_png" class="baobiao_icon" />
             </router-link>
           </div>
         </div>
@@ -36,6 +33,7 @@
 <script>
 import listInfo from "./listInfo.vue";
 
+let baobiao_png = require("@/assets/icons/baobiao.png");
 export default {
   name: "index",
   path: "/",
@@ -47,13 +45,13 @@ export default {
     this.getDate();
   },
   data() {
-    return { data: null, income: 0, expend: 0 };
+    return { data: null, income: 0, expend: 0, baobiao_png };
   },
   methods: {
     add: function() {
       this.$router.push("/add");
     },
-    
+
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
@@ -63,14 +61,14 @@ export default {
       this.$axios
         .post("/item/findMonth", {
           year: date.getFullYear(),
-          month: date.getMonth()+1
+          month: date.getMonth() + 1
         })
         .then(result => {
-          if (result.data.code==1) {
+          if (result.data.code == 1) {
             this.data = result.data.data;
             if (this.data) {
-               this.expend=0;
-               this.income=0;
+              this.expend = 0;
+              this.income = 0;
               for (let item of this.data) {
                 if (item.type == "支出") {
                   this.expend += item.money;
@@ -79,7 +77,7 @@ export default {
                 }
               }
             }
-          }else if(result.data.code==3){
+          } else if (result.data.code == 3) {
             this.$router.push("/login");
           }
         });
@@ -115,7 +113,7 @@ export default {
   /* margin-top:-50px; */
 
   margin-left: -25px;
-  background: url(../assets/voice_guide_00016.png);
+  background: url(../assets/icons/voice_guide_00016.png);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 999;
