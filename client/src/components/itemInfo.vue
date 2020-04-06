@@ -1,6 +1,6 @@
 <template>
   <div id="itemInfo_com">
-    <top title="详情"></top>
+    <top title="详情" :isDelete="true" :item="data"></top>
     <div id="itemeInfo">
       <div class="itemTitleAndMoney">
         <img :src="getImgUrl(data.detail)" class="itemImg" />
@@ -20,8 +20,9 @@
         <span class="itemTitle">备注</span>
         <span class="detail">{{data.remark}}</span>
       </div>
+
+      <div id="compile_button" @click="onClickCompile">编辑</div>
     </div>
-    <div id="delete" v-on:click="onDeleteClick"></div>
   </div>
 </template>
 
@@ -44,26 +45,16 @@ export default {
   },
 
   mounted() {
-    if (this.$route.query) this.data = this.$route.query;
+    if (this.$route.query) {
+      this.data = this.$route.query;
+    }
   },
   methods: {
-    onDeleteClick() {
-      this.$axios
-        .post("/item/romeve", {
-          _id: this.data._id
-        })
-        .then(result => {
-          // alert("????");
-          if (result.data.code == 1) {
-            this.data = result.data.data;
-            this.$router.back(-1);
-          } else if (result.data.code == 3) {
-            this.$router.push("/login");
-          }
-        });
-    },
     getImgUrl(type) {
       if (type) return require("@/assets/icons/" + this.$typeMap.get(type));
+    },
+    onClickCompile() {
+      this.$router.replace({ path: "/add", query: this.data });
     }
   }
 };
@@ -78,7 +69,7 @@ export default {
 }
 #itemeInfo {
   width: 80%;
-  height: 3.5rem;
+  height: 4rem;
   /* background: #fffffd; */
   position: relative;
   top: 1rem;
@@ -132,5 +123,16 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   z-index: 999;
+}
+#compile_button {
+  width: 3rem;
+  text-align: center;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  background: #9577fd;
+  border-radius: 25px;
+  position: relative;
+  margin: 0 auto;
+  cursor: pointer;
 }
 </style>

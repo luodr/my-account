@@ -25,7 +25,10 @@
             <li>{{item[1].income-item[1].expend}}</li>
           </ul>
         </template>
-        <div v-for="(item,index) in item[1].items" v-bind:key="index">
+        <div v-for="(item,index) in item[1].items" v-bind:key="index" 
+         @click="onClick($event,item)"
+     
+     >
           <!-- <div class="columnarItem">
             <img :src="getImgUrl(item.detail)" />
             <span>{{item.detail}}</span>
@@ -69,12 +72,14 @@ export default {
       activeNames: ["1"]
     };
   },
-  mounted() {},
+  mounted() {
+ 
+  },
 
   methods: {
     onClick(event, data) {
-      // this.$router.push({ path: "/itemInfo", query: data });
-      alert(data);
+     this.$router.push({ path: "/itemInfo", query: data });
+    
     },
     transformDate(d) {
       let date = new Date(d);

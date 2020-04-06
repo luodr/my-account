@@ -28,7 +28,12 @@
       </ul>
     </div>
     <div id="inputInfo">
-      <datetimePicker class="date_div" v-on:timestamp="getdatetimePickerInfo"></datetimePicker>
+      <datetimePicker
+        class="date_div"
+        v-on:picker="getdatetimePickerInfo"
+        :timestamp="timestamp"
+        :remarkValue="remarkValue"
+      ></datetimePicker>
       <div class="counter" v-if="isShowCounter">
         <div class="counter_left">
           <ul>
@@ -65,13 +70,33 @@ let calc_delete = require("@/assets/icons/calc_delete.png");
 export default {
   name: "add_com",
   path: "/add",
-
+  mounted() {
+    if (this.$route.query) {
+      //如果是修改
+      this.data = this.$route.query;
+      this.detail = this.data.detail;
+      this.type = this.data.type;
+      this.money = this.data.money;
+      this.getdatetimePickerInfo(
+        new Date(this.data.date).getTime(),
+        this.remark
+      );
+      this.remarkValue=this.remark;
+      if (this.type == "支出") {
+        this.clickExpenditure();
+      } else {
+        this.clickIncome();
+      }
+    }
+  },
   components: { datetimePicker, top },
   data() {
     return {
+      data: null,
       expenditure: true,
       income: false,
       transfer: false,
+      remarkValue:"",
       detail: "餐饮",
       type: "支出",
       money: 0.0,
@@ -90,6 +115,7 @@ export default {
       remark: ""
     };
   },
+ 
   methods: {
     //支出
     clickExpenditure() {
@@ -234,8 +260,42 @@ export default {
       this.nowMoney = this.money + "";
 
       if (this.ok && this.money != 0) {
-        this.addRequest();
+        if (!this.data) {
+          this.addRequest();
+        } else {
+          this.modification();
+        }
       }
+    },
+    modification() {
+      this.$axios
+        .post("/item/modify", {
+          _id: this.data._id,
+          type: this.type,
+          detail: this.detail,
+          money: this.money,
+          date: this.timestamp,
+          // phoneNumber: this.$user.phoneNumber,
+          remark: this.remark
+        })
+        .then(result => {
+          // alert("????");
+          if (result.data.code == 1) {
+            this.$router.replace({
+              path: "/itemInfo",
+              query: {
+                _id: this.data._id,
+                type: this.type,
+                detail: this.detail,
+                money: this.money,
+                date: this.timestamp,
+                remark: this.remark
+              }
+            });
+          } else if (result.data.code == 3) {
+            this.$router.push("/login");
+          }
+        });
     },
     pushNum() {
       //把数字放进数组
@@ -262,6 +322,8 @@ export default {
       }
     },
     getdatetimePickerInfo(timestamp, remark) {
+      console.log(timestamp,remark);
+      
       this.timestamp = timestamp;
       this.remark = remark;
     },
@@ -338,6 +400,7 @@ export default {
 #types ul li img {
   width: 0.7rem;
   height: 0.7rem;
+  cursor: pointer;
 }
 .typeIconName {
   font-size: 0.3rem;

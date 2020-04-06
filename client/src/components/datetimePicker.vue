@@ -10,7 +10,7 @@
       <!-- <el-date-picker v-model="timestamp" style="width:3rem" :editable=false  :picker-options={disabledDate:true} type="datetime" placeholder="选择日期时间"></el-date-picker> -->
       <div class="jiange" style="border-right: black solid 1px;"></div>
       <div class="jiange"></div>
-      <img :src="getImgUrl('remark.png')"  class="date_icon" />
+      <img :src="getImgUrl('remark.png')" class="date_icon" />
       <input
         type="text"
         placeholder="写点啥备注下"
@@ -65,9 +65,10 @@ export default {
   data() {
     return {
       date: "今天",
-      timestamp: new Date().getTime(),
+      rk: "",
+      value: null,
       remark: "",
-      value: null
+      datetime: new Date().getTime()
     };
   },
   props: {
@@ -79,12 +80,29 @@ export default {
       type: String,
       default: "34"
     },
+    remarkValue: {
+      type: String,
+      default: ""
+    },
+    timestamp: {
+      type: Number,
+      default: new Date().getTime()
+    },
     time: {
       type: Boolean,
       default: true
     }
   },
-  watch: {},
+  watch: {
+    remarkValue: function() {
+      this.remark = this.remarkValue;
+      alert(this.remark);
+      
+    },
+    timestamp: function() {
+      this.datetime = this.timestamp;
+    }
+  },
   methods: {
     time2str(t) {
       return t > 9 ? t : "0" + t;
@@ -96,11 +114,34 @@ export default {
       return require("@/assets/icons/" + name);
     },
     blur() {
-      this.$emit("timestamp", this.timestamp, this.remark);
+      this.$emit("picker", this.datetime, this.remark);
+    },
+    formatDate(d1, d2, d3, d4, d5) {
+      let date = new Date();
+      if (d1 == date.getFullYear()) {
+        if (d2 == date.getMonth() + 1 && d3 == date.getDate()) {
+          this.date = "今天";
+        } else {
+          this.date = d2 + "-" + d3;
+        }
+      } else {
+        this.date = d1 + "-" + d2 + "-" + d3;
+      }
     }
   },
 
   mounted() {
+    this.remark = this.remarkValue;
+    let d = new Date(this.datetime);
+    console.log(this.datetime);
+    
+    this.formatDate(
+      d.getFullYear(),
+      d.getMonth() + 1,
+      d.getDate(),
+      d.getHours(),
+      d.getMinutes()
+    );
     let year = new Date().getFullYear();
     let month = this.time2str(new Date().getMonth() + 1);
     let date = this.time2str(new Date().getDate());
@@ -123,21 +164,10 @@ export default {
       endYear: year + 20,
       timeBoo: this.time, //是否显示时分
       afterAction: (d1, d2, d3, d4, d5) => {
-        // $(".sp-date").(d1 + "-" + d2 + "-" + d3 + "  " + d4 + ":" + d5);
-        let date = new Date();
-        if (d1 == date.getFullYear()) {
-          if (d2 == date.getMonth() + 1 && d3 == date.getDate()) {
-            this.date = "今天";
-          } else {
-            this.date = d2 + "-" + d3;
-          }
-        } else {
-          this.date = d1 + "-" + d2 + "-" + d3;
-        }
-        this.timestamp = Date.parse(
+        this.datetime = Date.parse(
           d1 + "/" + d2 + "/" + d3 + "  " + d4 + ":" + d5
         );
-        this.$emit("timestamp", this.timestamp, this.remark);
+        this.$emit("picker", this.datetime, this.remark);
       }
     });
   },

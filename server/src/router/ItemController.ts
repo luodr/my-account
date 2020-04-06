@@ -9,8 +9,8 @@ export default class ItemController {
      */
     @router("post", "/item/add")
     async  addItem(req: Request, res: Response) {
-        let user =ItemController.isLogin(req,res);
-        if(!user) return;
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
         let body = req.body;
         let i = new Item({
             type: body.type,
@@ -30,12 +30,41 @@ export default class ItemController {
         })
     }
     /**
+        *  添加一条收支
+        */
+    @router("post", "/item/modify")
+    async  modifyItem(req: Request, res: Response) {
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
+        let body = req.body;
+        let l = await Item.updateOne({
+            _id: body._id,
+            phoneNumber: user.phoneNumber
+        }, {
+            type: body.type,
+            detail: body.detail,
+            money: body.money,
+            date: body.date,
+
+            remark: body.remark,
+            account: body.account
+        });
+        if (l.n > 0) {
+            res.json(new Message(1, "修改成功!", null))
+        }else{
+            res.json(new Message(0, "修改失败!", null));
+        }
+
+    }
+
+
+    /**
     *  删除一条收支
     */
     @router("post", "/item/romeve")
     async remove(req: Request, res: Response) {
-        let user =ItemController.isLogin(req,res);
-        if(!user) return;
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
         let body = req.body;
         let dlt = await Item.deleteOne({
             _id: body._id,
@@ -52,8 +81,8 @@ export default class ItemController {
      */
     @router("post", "/item/findMonthAndType")
     async findMonthAndType(req: Request, res: Response) {
-        let user =ItemController.isLogin(req,res);
-        if(!user) return;
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
         let dates = ItemController.getDate(req, res);
         let array = await Item.aggregate([
             {
@@ -84,8 +113,8 @@ export default class ItemController {
         */
     @router("post", "/item/findMonth")
     async findMonthe(req: Request, res: Response) {
-        let user =ItemController.isLogin(req,res);
-        if(!user) return;
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
         let dates = ItemController.getDate(req, res);
 
 
@@ -113,8 +142,8 @@ export default class ItemController {
      */
     @router("post", "/item/findMonthAndDetail")
     async findMonthAndDetail(req: Request, res: Response) {
-        let user =ItemController.isLogin(req,res);
-        if(!user) return;
+        let user = ItemController.isLogin(req, res);
+        if (!user) return;
         let dates = ItemController.getDate(req, res);
         let body = req.body;
         let array = await Item.aggregate([

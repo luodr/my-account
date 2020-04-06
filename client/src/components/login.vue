@@ -20,7 +20,7 @@
       </div>
       <div class="login_bt" @click="login">登录</div>
     </div>
-    <div class="toast" v-show="toastShow">{{toastText}}</div>
+    <!-- <div class="toast" v-show="toastShow">{{toastText}}</div> -->
   </div>
 </template>
 
@@ -49,7 +49,12 @@ export default {
     },
     getCode() {
       if (!this.checkPhone(this.PhoneNumber)) {
-        this.toast("请输入正确的手机号码");
+        this.$message({
+          message: "请输入正确的手机号码",
+          type: "warning",
+          center: true,
+          customClass: "massege"
+        });
       } else if (!this.send) {
         this.$axios
           .post("/login/send", {
@@ -57,7 +62,10 @@ export default {
           })
           .then(response => {
             if (response.data.code == 1) {
-              this.toast("获取验证码成功");
+              this.$message({
+                message: "获取验证码成功！请注意查收",
+                type: "success"
+              });
               this.send = true;
               this.endTIme = Date.now() + 1000 * 60;
               let interval = setInterval(() => {
@@ -72,19 +80,39 @@ export default {
                 }
               }, 1000);
             } else {
-              this.toast("获取失败!请稍后重试");
+              this.$message({
+                message: "获取验证码失败!请稍后重试",
+                type: "warning",
+                center: true,
+                customClass: "massege"
+              });
             }
           })
           .catch(error => {
-            this.toast("获取失败!请稍后重试");
+            this.$message({
+              message: "获取验证码失败!请稍后重试",
+              type: "warning",
+              center: true,
+              customClass: "massege"
+            });
           });
       }
     },
     login() {
       if (!this.checkPhone(this.PhoneNumber)) {
-        this.toast("请输入正确的手机号码");
+        this.$message({
+          message: "请输入正确的手机号码",
+          type: "warning",
+          center: true,
+          customClass: "massege"
+        });
       } else if (!this.securityCode) {
-        this.toast("请输入验证码");
+        this.$message({
+          message: "请输入验证码",
+          type: "warning",
+          center: true,
+          customClass: "massege"
+        });
       } else {
         this.$axios
           .post("/login/verify", {
@@ -94,24 +122,27 @@ export default {
           .then(response => {
             if (response.data.code == 1) {
               Vue.prototype.$user = response.data.data;
-              this.toast("登录成功!");
+
+              this.$message({
+                message: "登录成功",
+                type: "success",
+                center: true
+               
+              });
               this.$router.push("/index");
             } else {
-              this.toast("验证码错误!");
+              this.$message({
+                message: "验证码错误！",
+                type: "success",
+                center: true,
+                customClass: "massege"
+              });
             }
           })
           .catch(error => {
             console.log(error);
           });
       }
-    },
-    toast(str) {
-      let v = this;
-      v.toastText = str;
-      v.toastShow = true;
-      setTimeout(function() {
-        v.toastShow = false;
-      }, 1000);
     },
     checkPhone(phone) {
       if (!/^1[3456789]\d{9}$/.test(phone)) {
@@ -195,23 +226,10 @@ export default {
   position: relative;
   top: 0.5rem;
 }
-.toast {
-  position: fixed;
-  z-index: 2000;
-  left: 50%;
-  top: 60%;
-  transition: all 0.5s;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-  -moz-transform: translateX(-50%) translateY(-50%);
-  -ms-transform: translateX(-50%) translateY(-50%);
-  -o-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%);
-  text-align: center;
-  border-radius: 5px;
-  color: #fff;
-  background: rgba(17, 17, 17, 0.5);
-  height: 45px;
-  line-height: 45px;
-  padding: 0 15px;
+.massege {
+  /* width: 100px; */
+  max-width: 80%;
+  background: none;
+  border: none;
 }
 </style>

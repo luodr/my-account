@@ -10,24 +10,61 @@
         <div style="position:absolute;top:0px;float:left;text-align:left;width:100%">
           <img :src="icon_back_black" class="go_back" @click="onBack" />
         </div>
+        <div class="delete-icon" @click="onDeleteClick" v-if="isDelete">
+          <i class="el-icon-delete"></i>
+        </div>
       </div>
     </div>
+    <MessageBox v-if="showMessageBox" v-on:closeMessage="closeMessageBox" :item="massageBox"></MessageBox>
   </div>
 </template>
 
 <script>
-let icon_back_black=require("@/assets/icons/icon_back_black.png")
+let icon_back_black = require("@/assets/icons/icon_back_black.png");
+import MessageBox from "./MessageBox";
 export default {
   name: "top",
-  components: {},
-  props: ["title"],
+  components: { MessageBox },
+  props: ["title", "isDelete", "item"],
   mounted() {},
   data() {
-    return { data: null,icon_back_black };
+    return {
+      data: null,
+      icon_back_black,
+      showMessageBox: false,
+      massageBox: {
+        title: "删除",
+        info: "你确定要删除这条记录吗?",
+        fun: () => {
+          this.deleteRequest();
+        }
+      }
+    };
   },
   methods: {
     onBack() {
       this.$router.back(-1);
+    },
+    closeMessageBox() {
+      this.showMessageBox = false;
+    },
+    onDeleteClick() {
+      this.showMessageBox = true;
+    },
+    deleteRequest() {
+      this.$axios
+        .post("/item/romeve", {
+          _id: this.item._id
+        })
+        .then(result => {
+          // alert("????");
+          if (result.data.code == 1) {
+            this.data = result.data.data;
+            this.$router.back(-1);
+          } else if (result.data.code == 3) {
+            this.$router.push("/login");
+          }
+        });
     }
   }
 };
@@ -55,5 +92,14 @@ export default {
   /* vertical-align: middle; */
   /* display: inline-block; */
   /* float: none; */
+}
+.delete-icon {
+  float: right;
+  color: #9577fd;
+  width: 0.5rem;
+  height: 0.5rem;
+  position: relative;
+  text-align: center;
+    cursor: pointer;
 }
 </style>
