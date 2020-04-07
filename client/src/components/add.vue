@@ -70,25 +70,7 @@ let calc_delete = require("@/assets/icons/calc_delete.png");
 export default {
   name: "add_com",
   path: "/add",
-  mounted() {
-    if (this.$route.query) {
-      //如果是修改
-      this.data = this.$route.query;
-      this.detail = this.data.detail;
-      this.type = this.data.type;
-      this.money = this.data.money;
-      this.getdatetimePickerInfo(
-        new Date(this.data.date).getTime(),
-        this.remark
-      );
-      this.remarkValue=this.remark;
-      if (this.type == "支出") {
-        this.clickExpenditure();
-      } else {
-        this.clickIncome();
-      }
-    }
-  },
+
   components: { datetimePicker, top },
   data() {
     return {
@@ -96,7 +78,7 @@ export default {
       expenditure: true,
       income: false,
       transfer: false,
-      remarkValue:"",
+      remarkValue: "",
       detail: "餐饮",
       type: "支出",
       money: 0.0,
@@ -115,7 +97,27 @@ export default {
       remark: ""
     };
   },
- 
+  mounted() {
+    if (this.$route.query) {
+      //如果是修改
+      this.data = this.$route.query;
+      if (this.data._id) {
+        this.remarkValue = this.data.remark;
+        this.type = this.data.type;
+        this.getdatetimePickerInfo(
+          new Date(this.data.date).getTime(),
+          this.remark
+        );
+        if (this.type == "支出") {
+          this.clickExpenditure();
+        } else {
+          this.clickIncome();
+        }
+        this.detail = this.data.detail;
+        this.money = this.data.money;
+      }
+    }
+  },
   methods: {
     //支出
     clickExpenditure() {
@@ -260,10 +262,13 @@ export default {
       this.nowMoney = this.money + "";
 
       if (this.ok && this.money != 0) {
-        if (!this.data) {
-          this.addRequest();
-        } else {
+        console.log(this.data._id);
+
+        //是否修改
+        if (this.data && this.data._id) {
           this.modification();
+        } else {
+          this.addRequest();
         }
       }
     },
@@ -322,8 +327,6 @@ export default {
       }
     },
     getdatetimePickerInfo(timestamp, remark) {
-      console.log(timestamp,remark);
-      
       this.timestamp = timestamp;
       this.remark = remark;
     },

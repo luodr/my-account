@@ -95,12 +95,22 @@ export default {
   },
   watch: {
     remarkValue: function() {
+      if(this.remarkValue)
       this.remark = this.remarkValue;
-      alert(this.remark);
+
       
     },
     timestamp: function() {
+      if(!this.timestamp)return;
       this.datetime = this.timestamp;
+      let d = new Date(this.datetime);
+      this.formatDate(
+        d.getFullYear(),
+        d.getMonth() + 1,
+        d.getDate(),
+        d.getHours(),
+        d.getMinutes()
+      );
     }
   },
   methods: {
@@ -131,17 +141,6 @@ export default {
   },
 
   mounted() {
-    this.remark = this.remarkValue;
-    let d = new Date(this.datetime);
-    console.log(this.datetime);
-    
-    this.formatDate(
-      d.getFullYear(),
-      d.getMonth() + 1,
-      d.getDate(),
-      d.getHours(),
-      d.getMinutes()
-    );
     let year = new Date().getFullYear();
     let month = this.time2str(new Date().getMonth() + 1);
     let date = this.time2str(new Date().getDate());
