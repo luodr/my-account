@@ -403,7 +403,7 @@ export default {
 #types ul li img {
   width: 0.7rem;
   height: 0.7rem;
-  cursor: pointer;
+  
 }
 .typeIconName {
   font-size: 0.3rem;

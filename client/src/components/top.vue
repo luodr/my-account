@@ -100,6 +100,6 @@ export default {
   height: 0.5rem;
   position: relative;
   text-align: center;
-    cursor: pointer;
+  
 }
 </style>

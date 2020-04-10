@@ -291,13 +291,13 @@ export default {
 .report_info ul li div {
   position: relative;
   top: 0.2rem;
-  cursor: pointer;
+  
 }
 
 .report_moneyNow {
   color: #9378fb;
   font-size: 0.3rem;
-  cursor: pointer;
+ 
 }
 .report_mone {
   color: black;
@@ -306,7 +306,7 @@ export default {
 .report_moneyType {
   color: #7e7e7f;
   font-size: 0.2rem;
-  cursor: pointer;
+
 }
 .hr_div {
   width: 100%;

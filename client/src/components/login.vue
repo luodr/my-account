@@ -195,7 +195,7 @@ export default {
   top: 0.25rem;
   vertical-align: middle;
   border: 1px solid #9378fb;
-  cursor: pointer;
+
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;

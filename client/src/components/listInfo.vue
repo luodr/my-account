@@ -68,7 +68,7 @@ export default {
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
-  cursor: pointer;
+
 }
 .info {
   width: 90%;

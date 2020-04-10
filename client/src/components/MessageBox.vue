@@ -60,7 +60,7 @@
 }
 .message_but {
   color: #fff;
-  cursor: pointer;
+ 
   background-color: #409eff;
   border-color: #409eff;
   border-radius: 3px;

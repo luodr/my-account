@@ -25,7 +25,7 @@
             <li>{{item.income-item.expend}}</li>
           </ul>
         </template>
-        <div v-for="(detail,index) in item.items" v-bind:key="index" @click="onClick($event,item)">
+        <div v-for="(detail,index) in item.items" v-bind:key="index" @click="onClick($event,detail)">
           <!-- <div class="columnarItem">
             <img :src="getImgUrl(item.detail)" />
             <span>{{item.detail}}</span>

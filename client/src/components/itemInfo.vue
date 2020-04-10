@@ -133,6 +133,6 @@ export default {
   border-radius: 25px;
   position: relative;
   margin: 0 auto;
-  cursor: pointer;
+
 }
 </style>

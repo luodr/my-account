@@ -33,8 +33,6 @@ export default {
     draw: function() {
       var myChart = this.$echarts.init(this.$refs.line_view);
       let days = [];
-      let date = new Date();
-      //
       let data1 = [];
       let data2 = [];
       let data3 = [];
