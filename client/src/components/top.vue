@@ -62,7 +62,7 @@ export default {
             this.data = result.data.data;
             this.$router.back(-1);
           } else if (result.data.code == 3) {
-            this.$router.push("/login");
+            this.$toLogin(this);
           }
         });
     }

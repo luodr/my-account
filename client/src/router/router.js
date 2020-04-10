@@ -14,16 +14,16 @@ const routes = [
 
     {
         path: '/', component: index, alias: '/index',
-        meta: { index: 0},
+        meta: { index: 0 },
     },
-    { path: '/add', component: add,  meta: { index: 1 },name:"add" },
-    { path: '/report', component: report ,  meta: { index: 1 }},
- 
-    { path: '/itemInfo', component: itemInfo,  meta: { index: 1 },name:"itemInfo"},
-    { path: '/login', component: login,  meta: { index: 1 }},
+    { path: '/add', component: add, meta: { index: 1 }, name: "add" },
+    { path: '/report', component: report, meta: { index: 1 } },
+
+    { path: '/itemInfo', component: itemInfo, meta: { index: 1 }, name: "itemInfo" },
+    { path: '/login', component: login, meta: { index: 1 } },
 ]
 const router = new VueRouter({
-    // mode: 'history',
+    mode: 'history',
     routes
 })
 export default router;

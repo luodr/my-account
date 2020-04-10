@@ -10,7 +10,7 @@ export default class LoginController {
     @router("post", "/login/send")
     private async checkoutPhone(req: Request, res: Response) {
         let PhoneNumber = req.body.PhoneNumber;
-        if (!PhoneNumber) {
+        if (!/^1[3456789]\d{9}$/.test(PhoneNumber)) {
             res.json(new Message(0, "请输入正确的手机号吗", null));
         }
         //验证码

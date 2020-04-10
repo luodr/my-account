@@ -38,23 +38,24 @@
               @click="clickSurplus"
             >{{(income-expend).toFixed(2)}}</p>
 
-            <p class="report_moneyType">总结余</p>
+            <p class="report_moneyType" @click="clickSurplus">总结余</p>
           </div>
         </li>
       </ul>
     </div>
     <br />
-    <div class="show_reportType_div">
+    <div class="show_reportType_div" v-if="!this.isSurplus"> 
       <ul>
         <li class="bz" :class="{click_color:isCake}" @click="clickCakeType(true)">饼图</li>
         <li class="zz" :class="{click_color:isColumnar}" @click="clickCakeType(false)">柱状</li>
       </ul>
     </div>
-    <columnar v-if="!isCake" :data="columnars"></columnar>
-    <cake v-if="isCake" :data="cake"></cake>
-    <div class="hr_div" v-if="isCake" ></div>
-    <cakelist v-if="isCake" :cakeMap="this.cakeMap" :allMoney="allMoney"></cakelist>
-    <columnarlist v-if="!isCake" :columnarMap="this.columnarMap" ></columnarlist>
+    <columnar v-if="!isCake&&!this.isSurplus" :date="choose" :data="columnars"></columnar>
+    <cake v-if="isCake&&!this.isSurplus" :data="cake"></cake>
+    <lineChart v-if="this.isSurplus" :data="columnarMap"></lineChart>
+    <div class="hr_div" v-if="isCake"></div>
+    <cakelist  v-if="isCake&&!this.isSurplus" :cakeMap="this.cakeMap" :allMoney="allMoney"></cakelist>
+    <columnarlist v-if="!isCake||this.isSurplus" :columnarMap="this.columnarMap"></columnarlist>
   </div>
 </template>
 
@@ -64,11 +65,12 @@ import columnar from "./columnar.vue";
 import cake from "./cake.vue";
 import cakelist from "./cakelist";
 import columnarlist from "./columnarlist";
+import lineChart from "./lineChart";
 export default {
   name: "report_com",
   path: "/report",
 
-  components: { columnar, top, cake, cakelist, columnarlist },
+  components: { columnar, top, cake, cakelist, columnarlist, lineChart },
   mounted() {
     this.getDate(this.choose.getFullYear(), this.choose.getMonth() + 1);
   },
@@ -98,7 +100,8 @@ export default {
       columnars: [],
       choose: new Date(),
       allMoney: 0,
-      columnarMap: new Map()
+      columnarMap: new Map(),
+      isSurplus: false
     };
   },
   methods: {
@@ -124,26 +127,37 @@ export default {
         .then(result => {
           if (result.data.code == 1) {
             this.data = result.data.data;
-            //重置数据
-            this.resetData();
-            for (let items of this.data) {
-              if (items._id == "收入") {
-                this.income = items.allMoney;
-                this.getClassify(this.incomeMap, items.items);
-                this.incomeArray = items.items;
-                this.setColumnarMap(items.items);
-              } else {
-                this.expend = items.allMoney;
-                this.expendArray = items.items;
-                this.getClassify(this.expendMap, items.items);
-                this.setColumnarMap(items.items);
-              }
-            }
-            this.clickExpenditure();
+            this.initDate();
           } else if (result.data.code == 3) {
-            this.$router.push("/login");
+            // this.$router.push("/login");
+            //没登录使用测试数据
+            this.data = this.$testInfo.reportData;
+            this.initDate();
           }
+        })
+        .catch(() => {
+          //链接不是服务器,使用测试数据
+          this.data = this.$testInfo.reportData;
+          this.initDate();
         });
+    },
+    initDate() {
+      //重置数据
+      this.resetData();
+      for (let items of this.data) {
+        if (items._id == "收入") {
+          this.income = items.allMoney;
+          this.getClassify(this.incomeMap, items.items);
+          this.incomeArray = items.items;
+          this.setColumnarMap(items.items);
+        } else {
+          this.expend = items.allMoney;
+          this.expendArray = items.items;
+          this.getClassify(this.expendMap, items.items);
+          this.setColumnarMap(items.items);
+        }
+      }
+      this.clickExpenditure();
     },
     getClassify(map, array) {
       for (let item of array) {
@@ -175,6 +189,7 @@ export default {
       this.cake = this.mapToArray(this.expendMap);
       this.columnars = this.expendArray;
       this.allMoney = this.expend;
+      this.isSurplus = false;
       this.setCakeMap();
     },
     //收入
@@ -185,8 +200,15 @@ export default {
       this.cake = this.mapToArray(this.incomeMap);
       this.columnars = this.incomeArray;
       this.setCakeMap();
-
+      this.isSurplus = false;
       this.allMoney = this.income;
+    },
+    //结余
+    clickSurplus() {
+      this.consume = "";
+      this.incomes = "";
+      this.surplus = "report_moneyNow";
+      this.isSurplus = true;
     },
     clickCakeType(is) {
       this.isCake = is;
@@ -205,12 +227,6 @@ export default {
         this.cakeMap = this.incomeMap;
       }
     },
-    //转账
-    clickSurplus() {
-      // this.consume = "";
-      // this.incomes = "";
-      // this.surplus = "report_moneyNow";
-    },
     setColumnarMap(array) {
       for (let item of array) {
         let d = new Date(item.date);
@@ -226,8 +242,9 @@ export default {
           this.columnarMap.set(d.getDate(), {
             income,
             expend,
-            month:d.getMonth()+1,
-            items: [item]
+            month: d.getMonth() + 1,
+            items: [item],
+            day:d.getDate()
           });
         }
       }
@@ -274,11 +291,13 @@ export default {
 .report_info ul li div {
   position: relative;
   top: 0.2rem;
+  cursor: pointer;
 }
 
 .report_moneyNow {
   color: #9378fb;
   font-size: 0.3rem;
+  cursor: pointer;
 }
 .report_mone {
   color: black;
@@ -287,6 +306,7 @@ export default {
 .report_moneyType {
   color: #7e7e7f;
   font-size: 0.2rem;
+  cursor: pointer;
 }
 .hr_div {
   width: 100%;

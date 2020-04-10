@@ -5,8 +5,11 @@
       <div class="content">
         <div class="banner_top">
           <div>
+            <span @click="drawer = true" class="el-icon-setting setting_icon"></span>
+
             <router-link to="/report">
-              <img :src="baobiao_png" class="baobiao_icon" />
+              <!-- <img :src="baobiao_png" class="baobiao_icon" /> -->
+              <span class="el-icon-pie-chart baobiao_icon"></span>
             </router-link>
           </div>
         </div>
@@ -27,6 +30,29 @@
     </div>
     <listInfo :infos="data"></listInfo>
     <div id="add" v-on:click="add"></div>
+
+    <el-drawer
+      title="我是标题"
+      :visible.sync="drawer"
+      :direction="direction"
+      :before-close="handleClose"
+      :size="size"
+      :wrapperClosable="true"
+      :with-header="false"
+      :modal-append-to-body="false"
+      class="drawer"
+      :modal="true"
+    >
+      <br />
+
+      <div class="message_but el-button" @click="toLogin" v-if="!isLogin">点我登录</div>
+      <br />
+      <br />
+      <br />
+      <br />
+
+      <span v-if="isLogin">啥也没有先占位</span>
+    </el-drawer>
   </div>
 </template>
 
@@ -45,15 +71,42 @@ export default {
     this.getDate();
   },
   data() {
-    return { data: null, income: 0, expend: 0, baobiao_png };
+    return {
+      data: null,
+      income: 0,
+      expend: 0,
+      baobiao_png,
+      drawer: false,
+      direction: "ltr",
+      isLogin: false,
+      size: "50%"
+    };
   },
   methods: {
     add: function() {
       this.$router.push("/add");
     },
-
+    toLogin: function() {
+      this.$router.push("/login");
+    },
+    handleClose(done) {
+      done();
+    },
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+    },
+    setExpendAndIncome() {
+      if (this.data) {
+        this.expend = 0;
+        this.income = 0;
+        for (let item of this.data) {
+          if (item.type == "支出") {
+            this.expend += item.money;
+          } else {
+            this.income += item.money;
+          }
+        }
+      }
     },
     //获取数据
     getDate() {
@@ -66,20 +119,18 @@ export default {
         .then(result => {
           if (result.data.code == 1) {
             this.data = result.data.data;
-            if (this.data) {
-              this.expend = 0;
-              this.income = 0;
-              for (let item of this.data) {
-                if (item.type == "支出") {
-                  this.expend += item.money;
-                } else {
-                  this.income += item.money;
-                }
-              }
-            }
+            this.isLogin = true;
+            this.setExpendAndIncome();
           } else if (result.data.code == 3) {
-            this.$router.push("/login");
+            //没登陆,使用测试数据
+            this.data = this.$testInfo.indexData;
+            this.setExpendAndIncome();
           }
+        })
+        .catch(() => {
+          //链接不是服务器,使用测试数据
+          this.data = this.$testInfo.indexData;
+          this.setExpendAndIncome();
         });
     }
   }
@@ -141,8 +192,26 @@ export default {
 }
 .baobiao_icon {
   float: right;
-  width: 0.4rem;
-  height: 0.4rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  color: white;
+}
+.setting_icon {
+  float: left;
+  width: 0.8rem;
+  height: 0.8rem;
+  color: white;
+  position: relative;
+  left: 0.5rem;
+}
+.drawer {
+  color: black;
+  position: absolute;
+  z-index: 999;
+  text-align: center;
+}
+.el-drawer__container {
+  background: rgba(0, 0, 0, 0.5);
 }
 /* }
 .slide-right-enter-active,

@@ -9,7 +9,7 @@
 export default {
   name: "columnar",
   components: {},
-  props: ["data"],
+  props: ["data","date"],
   watch: {
     data: function() {
       this.datas = [];
@@ -31,10 +31,10 @@ export default {
       return d.getDate();
     },
     draw: function() {
-     
+    
       // 基于准备好的dom，初始化echarts实例
       let days = [];
-      let date = new Date();
+      let date =this.date;
       this.datas = [];
       for (
         let i = 0;

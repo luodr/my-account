@@ -64,7 +64,9 @@ export default {
             if (response.data.code == 1) {
               this.$message({
                 message: "获取验证码成功！请注意查收",
-                type: "success"
+                type: "success",
+                center: true,
+                customClass: "massege"
               });
               this.send = true;
               this.endTIme = Date.now() + 1000 * 60;
@@ -127,9 +129,8 @@ export default {
                 message: "登录成功",
                 type: "success",
                 center: true
-               
               });
-              this.$router.push("/index");
+              this.$router.replace("/index");
             } else {
               this.$message({
                 message: "验证码错误！",

@@ -9,7 +9,7 @@
       </ul>
     </div>
     <el-collapse
-      v-for="(item,index) in columnarMap"
+      v-for="(item,index) in sort"
       v-bind:key="index"
       class="columnarlistInfo"
       @click="onClick($event,item[1].items)"
@@ -19,30 +19,27 @@
       <el-collapse-item>
         <template slot="title">
           <ul class="columnarli">
-            <li>{{item[1].month}}月{{item[0]}}日</li>
-            <li>{{item[1].expend}}</li>
-            <li style="color:#9378fb">{{item[1].income}}</li>
-            <li>{{item[1].income-item[1].expend}}</li>
+            <li>{{item.month}}月{{item.day}}日</li>
+            <li>{{item.expend}}</li>
+            <li style="color:#9378fb">{{item.income}}</li>
+            <li>{{item.income-item.expend}}</li>
           </ul>
         </template>
-        <div v-for="(item,index) in item[1].items" v-bind:key="index" 
-         @click="onClick($event,item)"
-     
-     >
+        <div v-for="(detail,index) in item.items" v-bind:key="index" @click="onClick($event,item)">
           <!-- <div class="columnarItem">
             <img :src="getImgUrl(item.detail)" />
             <span>{{item.detail}}</span>
             <span class="co_money">{{item.money}}</span>
           </div>-->
-          <div class="columnarItem" >
-            <img :src="getImgUrl(item.detail)" class="icon" />
+          <div class="columnarItem">
+            <img :src="getImgUrl(detail.detail)" class="icon" />
 
             <div class="info_div">
-              <span class="type">{{item.detail}}</span>
-              <span class="date">{{ transformDate(item.date)}} {{item.remark}}</span>
+              <span class="type">{{detail.detail}}</span>
+              <span class="date">{{ transformDate(detail.date)}} {{detail.remark}}</span>
             </div>
-            <span v-if="item.type=='支出'" class="money" style="position: relative; ">{{item.money}}</span>
-            <span v-if="item.type=='收入'" class="addMoney" style="position: relative;">{{item.money}}</span>
+            <span v-if="detail.type=='支出'" class="money" style="position: relative; ">{{detail.money}}</span>
+            <span v-if="detail.type=='收入'" class="addMoney" style="position: relative;">{{detail.money}}</span>
           </div>
         </div>
       </el-collapse-item>
@@ -60,26 +57,35 @@ export default {
   components: {},
   watch: {
     columnarMap: function() {
-      // console.log(this.columnarMap.keys());
-      // for (let item in this.columnarMap) {
-      //   console.log(item);
-      // }
+      this.init();
     }
   },
   data() {
     return {
       next: mdtp_ic_chevron_right_black_24dp,
-      activeNames: ["1"]
+      sort: []
     };
   },
   mounted() {
- 
+    this.init();
   },
 
   methods: {
+    init() {
+      //初始化数据并排序
+      this.sort = [];
+      this.columnarMap.forEach((value, key) => {
+        this.sort.push(key);
+      });
+      this.sort.sort((val1, val2) => {
+        return val1 - val2;
+      });
+      this.sort.forEach((value, key) => {
+        this.sort[key] = this.columnarMap.get(value);
+      });
+    },
     onClick(event, data) {
-     this.$router.push({ path: "/itemInfo", query: data });
-    
+      this.$router.push({ path: "/itemInfo", query: data });
     },
     transformDate(d) {
       let date = new Date(d);
@@ -125,8 +131,8 @@ export default {
 }
 .columnarItem {
   height: 0.9rem;
-   position: relative;
-   top: 0.2rem;
+  position: relative;
+  top: 0.2rem;
 }
 .columnarItem img {
   width: 0.6rem;
@@ -150,6 +156,5 @@ export default {
   width: 90%;
   position: relative;
   left: 5%;
-  
 }
 </style>
