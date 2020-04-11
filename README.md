@@ -5,5 +5,5 @@
 
 ### 效果图 : [https://github.com/sinlo0806/img/blob/master/README.md](https://github.com/sinlo0806/img/blob/master/README.md)
 
-#### 前端 : vue-cli +element-ui+ echarts
-#### 后端 : typeScript+nodejs + express + mongodb
+#### 前端 : vue + vue-router + element-ui + echarts
+#### 后端 : typeScript + nodejs + express + mongodb
