@@ -6,8 +6,8 @@ var https = require('https');
 var http = require('http');
 import { RouterArray } from "./decorators/web"
 import fs from "fs"
+//加载https 配置 
 var certificate = fs.readFileSync(__dirname + '/config/3715413_sinlo.net.pem', 'utf8');
-
 var privateKey = fs.readFileSync(__dirname + '/config/3715413_sinlo.net.key', 'utf8');
 var credentials = { key: privateKey, cert: certificate };
 class App {
@@ -23,6 +23,7 @@ class App {
         var httpsServer = https.createServer(credentials, this.app);
         //https监听3000端口
         httpsServer.listen(8080);
+        //http监听3000端口
         this.app.listen(3000, (err) => {
             if (!err)
                 console.log("开启服务器成功");

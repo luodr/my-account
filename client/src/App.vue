@@ -39,6 +39,13 @@ export default {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, SimSun, sans-serif;
 }
+body {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  
+}
 .go_back {
   width: 0.5rem;
   height: 0.5rem;

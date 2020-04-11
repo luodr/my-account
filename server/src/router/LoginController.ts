@@ -15,9 +15,10 @@ export default class LoginController {
         }
         //验证码
         let securityCode = Math.random().toFixed(6).substr(2);
-        // securityCode = "026936";
-        //  let msg: any = await SendSms(PhoneNumber, securityCode);
-        let msg = { Code: "OK" };
+        //发送短信
+        let msg: any = await SendSms(PhoneNumber, securityCode);
+        // 用于测试
+        //   let msg = { Code: "OK" };
         console.log("你的验证码是:" + securityCode);
         if (msg.Code == "OK") {
             //把验证码和手机号保存到seesion
