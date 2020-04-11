@@ -2,9 +2,9 @@
   <!--报表-->
   <div id="report_com">
     <top title="报表"></top>
-    <div class="report_option">
-      <div class="block">
-        <el-date-picker
+    <div class="report_option ">
+      <div class="block ">
+        <el-date-picker class="cur"
           v-model="choose"
           type="month"
           align="center"
@@ -18,27 +18,27 @@
       <ul>
         <li>
           <div>
-            <p class="report_money" :class="consume" @click="clickExpenditure">{{expend.toFixed(2)}}</p>
+            <p class="report_money cur" :class="consume" @click="clickExpenditure">{{expend.toFixed(2)}}</p>
 
-            <p class="report_moneyType">总支出</p>
+            <p class="report_moneyType cur">总支出</p>
           </div>
         </li>
         <li>
           <div>
-            <p class="report_money" :class="incomes" @click="clickIncome">{{income.toFixed(2)}}</p>
+            <p class="report_money cur" :class="incomes" @click="clickIncome">{{income.toFixed(2)}}</p>
 
-            <p class="report_moneyType">总收入</p>
+            <p class="report_moneyType cur">总收入</p>
           </div>
         </li>
         <li>
           <div>
             <p
-              class="report_money"
+              class="report_money cur"
               :class="surplus"
               @click="clickSurplus"
             >{{(income-expend).toFixed(2)}}</p>
 
-            <p class="report_moneyType" @click="clickSurplus">总结余</p>
+            <p class="report_moneyType cur" @click="clickSurplus">总结余</p>
           </div>
         </li>
       </ul>
@@ -46,8 +46,8 @@
     <br />
     <div class="show_reportType_div" v-if="!this.isSurplus"> 
       <ul>
-        <li class="bz" :class="{click_color:isCake}" @click="clickCakeType(true)">饼图</li>
-        <li class="zz" :class="{click_color:isColumnar}" @click="clickCakeType(false)">柱状</li>
+        <li class="bz cur" :class="{click_color:isCake}" @click="clickCakeType(true)">饼图</li>
+        <li class="zz cur" :class="{click_color:isColumnar}" @click="clickCakeType(false)">柱状</li>
       </ul>
     </div>
     <columnar v-if="!isCake&&!this.isSurplus" :date="choose" :data="columnars"></columnar>
@@ -256,7 +256,6 @@ export default {
 <style>
 #report_com {
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
 
   height: 100vh;

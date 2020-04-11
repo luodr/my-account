@@ -158,7 +158,7 @@ export default {
 <style>
 #login_com {
   width: 100%;
-  max-width: 600px;
+
   margin: 0 auto;
   min-height: 100%;
 }

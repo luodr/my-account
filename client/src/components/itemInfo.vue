@@ -21,7 +21,7 @@
         <span class="detail">{{data.remark}}</span>
       </div>
 
-      <div id="compile_button" @click="onClickCompile">编辑</div>
+      <div id="compile_button" class="cur" @click="onClickCompile">编辑</div>
     </div>
   </div>
 </template>
@@ -63,7 +63,6 @@ export default {
 <style>
 #itemInfo_com {
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
   min-height: 100%;
 }

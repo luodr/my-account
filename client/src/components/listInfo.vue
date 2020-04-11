@@ -1,7 +1,7 @@
 <template>
   <div id="listInfo">
     <div
-      class="info"
+      class="info cur"
       v-for="(item,index) in infos"
       v-bind:key="index"
       @click="onClick($event,item)"
@@ -65,7 +65,7 @@ export default {
 <style>
 #listInfo {
   color: black;
-  max-width: 600px;
+ 
   width: 100%;
   margin: 0 auto;
 
@@ -78,6 +78,7 @@ export default {
   position: relative;
   /* top: 0.5rem; */
   font-size: 0.3rem;
+ 
 }
 .icon_div {
   float: left;

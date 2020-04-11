@@ -70,6 +70,7 @@ export default {
 #cake_view {
   margin: 0 auto;
   width: 100%;
+  max-width: 450px;
   height: 5rem;
 }
 </style>

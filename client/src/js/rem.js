@@ -16,6 +16,7 @@ function refreshRem() {
     var rem = width * 100 / designWidth;
     rem=Math.min(rem,45)
     remStyle.innerHTML = 'html{font-size:' + rem + 'px;}';
+   
 }
 
 if (docEl.firstElementChild) {

@@ -5,11 +5,11 @@
       <div class="content">
         <div class="banner_top">
           <div>
-            <span @click="drawer = true" class="el-icon-setting setting_icon"></span>
+            <span @click="drawer = true" class="el-icon-setting setting_icon cur"></span>
 
             <router-link to="/report">
               <!-- <img :src="baobiao_png" class="baobiao_icon" /> -->
-              <span class="el-icon-pie-chart baobiao_icon"></span>
+              <span class="el-icon-pie-chart baobiao_icon cur"></span>
             </router-link>
           </div>
         </div>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <listInfo :infos="data"></listInfo>
-    <div id="add" v-on:click="add"></div>
+    <div id="add" class="cur" v-on:click="add"></div>
 
     <el-drawer
       title="我是标题"
@@ -142,7 +142,7 @@ export default {
   /* min-height:100vh; */
   color: white;
   width: 100%;
-  max-width: 600px;
+
   margin: 0 auto;
   min-height: 100%;
   /* background: url(../assets/banner.png); */
@@ -162,7 +162,6 @@ export default {
   left: 50%;
   bottom: 1rem;
   /* margin-top:-50px; */
-
   margin-left: -25px;
   background: url(../assets/icons/voice_guide_00016.png);
   background-repeat: no-repeat;
@@ -203,6 +202,7 @@ export default {
   color: white;
   position: relative;
   left: 0.5rem;
+  
 }
 .drawer {
   color: black;

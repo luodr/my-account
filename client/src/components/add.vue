@@ -3,9 +3,15 @@
     <top title="日常账单"></top>
     <div id="recordType">
       <ul>
-        <li :class="{click_color:expenditure}" v-on:click="clickExpenditure">支出</li>
-        <li :class="{click_color:income}" v-on:click="clickIncome">收入</li>
-        <li :class="{click_color :transfer}" v-on:click="clickTransfer">转账</li>
+        <li :class="{click_color:expenditure}" v-on:click="clickExpenditure">
+          <span class="cur">支出</span>
+        </li>
+        <li :class="{click_color:income}" v-on:click="clickIncome">
+          <span class="cur">收入</span>
+        </li>
+        <li :class="{click_color :transfer}" v-on:click="clickTransfer">
+          <span class="cur">转账</span>
+        </li>
       </ul>
       <!-- </div> -->
     </div>
@@ -19,7 +25,7 @@
       <ul>
         <li v-for="(item,index) in icons" v-bind:key="index" @click="clickType(item.detail)">
           <div>
-            <img :src="getImgUrl(item.icon)" />
+            <img class="cur" :src="getImgUrl(item.icon)" />
 
             <br />
             <span class="typeIconName">{{item.detail}}</span>
@@ -38,22 +44,22 @@
         <div class="counter_left">
           <ul>
             <li
-              class="ripple"
+              class="ripple cur"
               v-for="(item,index) in counterItem"
               v-bind:key="index"
               @click="clickCounter($event)"
             >{{item}}</li>
 
             <li class="ripple">
-              <img :src="calc_delete" class="calc_delete" @click="clickDelete" />
+              <img :src="calc_delete" class="calc_delete cur"  @click="clickDelete" />
             </li>
           </ul>
         </div>
         <div class="counter_right">
           <ul>
-            <li class="ripple" @click="clickCounter($event)">+</li>
-            <li class="ripple" @click="clickCounter($event)">-</li>
-            <li class="ripple" id="ok" @click="clickOk">{{ok?"确定":"="}}</li>
+            <li class="ripple cur" @click="clickCounter($event)">+</li>
+            <li class="ripple cur" @click="clickCounter($event)">-</li>
+            <li class="ripple cur" id="ok" @click="clickOk">{{ok?"确定":"="}}</li>
           </ul>
         </div>
       </div>
@@ -346,7 +352,7 @@ export default {
             this.data = result.data.data;
             this.$router.back(-1);
           } else if (result.data.code == 3) {
-           this.$toLogin(this);
+            this.$toLogin(this);
           }
         });
     }
@@ -357,7 +363,7 @@ export default {
 <style>
 #add_com {
   width: 100%;
-  max-width: 600px;
+
   margin: 0 auto;
   min-height: 100%;
 }
@@ -403,7 +409,6 @@ export default {
 #types ul li img {
   width: 0.7rem;
   height: 0.7rem;
-  
 }
 .typeIconName {
   font-size: 0.3rem;
@@ -412,7 +417,7 @@ export default {
 #inputInfo {
   background: white;
   width: 100%;
-  max-width: 600px;
+  max-width: 450px;
   height: 5rem;
   position: absolute;
   bottom: 0;
@@ -468,4 +473,5 @@ export default {
   display: inline-block;
   vertical-align: middle;
 }
+
 </style>

@@ -41,10 +41,8 @@ export default {
 }
 body {
   width: 100%;
-  max-width: 600px;
+  max-width: 450px;
   margin: 0 auto;
-
-  
 }
 .go_back {
   width: 0.5rem;
@@ -79,5 +77,12 @@ body {
 .slide-left-leave-active {
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
+}
+.cur{
+ cursor: pointer;
+ /*css*/
+-webkit-tap-height-color:transprent;
+/*或者*/
+-webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 </style>

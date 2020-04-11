@@ -7,10 +7,10 @@
         <div style="position:absolute;top:0px;text-align:center;width:100%;font-size:0.4rem;">
           <h5>{{title}}</h5>
         </div>
-        <div style="position:absolute;top:0px;float:left;text-align:left;width:100%">
+        <div style="position:absolute;top:0px;float:left;text-align:left;width:100%;" class="cur">
           <img :src="icon_back_black" class="go_back" @click="onBack" />
         </div>
-        <div class="delete-icon" @click="onDeleteClick" v-if="isDelete">
+        <div class="delete-icon cur" @click="onDeleteClick" v-if="isDelete">
           <i class="el-icon-delete"></i>
         </div>
       </div>
@@ -100,6 +100,7 @@ export default {
   height: 0.5rem;
   position: relative;
   text-align: center;
+ 
   
 }
 </style>

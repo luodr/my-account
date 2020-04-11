@@ -1,7 +1,7 @@
 <template>
   <div class="datatime-picker-wrap">
     <div class="date_line">
-      <div class="sp-date">
+      <div class="sp-date cur">
         <img :src="getImgUrl('date.png')" class="date_icon" />
         <span>&nbsp;{{date}}</span>
       </div>
@@ -10,7 +10,7 @@
       <!-- <el-date-picker v-model="timestamp" style="width:3rem" :editable=false  :picker-options={disabledDate:true} type="datetime" placeholder="选择日期时间"></el-date-picker> -->
       <div class="jiange" style="border-right: black solid 1px;"></div>
       <div class="jiange"></div>
-      <img :src="getImgUrl('remark.png')" class="date_icon" />
+      <img :src="getImgUrl('remark.png')" class="date_icon " />
       <input
         type="text"
         placeholder="写点啥备注下"
