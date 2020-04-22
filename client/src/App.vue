@@ -43,6 +43,10 @@ body {
   width: 100%;
   max-width: 450px;
   margin: 0 auto;
+  background: #f8f8f8;
+}
+#app{
+  background: white;
 }
 .go_back {
   width: 0.5rem;

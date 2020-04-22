@@ -20,12 +20,16 @@
         <template slot="title">
           <ul class="columnarli">
             <li>{{item.month}}月{{item.day}}日</li>
-            <li>{{item.expend}}</li>
-            <li style="color:#9378fb">{{item.income}}</li>
-            <li>{{item.income-item.expend}}</li>
+            <li>{{Number(item.expend).toFixed(2)}}</li>
+            <li style="color:#9378fb">{{Number(item.income).toFixed(2)}}</li>
+            <li>{{Number(item.income-item.expend).toFixed(2)}}</li>
           </ul>
         </template>
-        <div v-for="(detail,index) in item.items" v-bind:key="index" @click="onClick($event,detail)">
+        <div
+          v-for="(detail,index) in item.items"
+          v-bind:key="index"
+          @click="onClick($event,detail)"
+        >
           <!-- <div class="columnarItem">
             <img :src="getImgUrl(item.detail)" />
             <span>{{item.detail}}</span>
@@ -38,8 +42,16 @@
               <span class="type">{{detail.detail}}</span>
               <span class="date">{{ transformDate(detail.date)}} {{detail.remark}}</span>
             </div>
-            <span v-if="detail.type=='支出'" class="money" style="position: relative; ">{{detail.money}}</span>
-            <span v-if="detail.type=='收入'" class="addMoney" style="position: relative;">{{detail.money}}</span>
+            <span
+              v-if="detail.type=='支出'"
+              class="money"
+              style="position: relative; "
+            >{{Number(detail.money).toFixed(2)}}</span>
+            <span
+              v-if="detail.type=='收入'"
+              class="addMoney"
+              style="position: relative;"
+            >{{Number(detail.money).toFixed(2)}}</span>
           </div>
         </div>
       </el-collapse-item>

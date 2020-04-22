@@ -160,7 +160,7 @@ export default {
   width: 100%;
 
   margin: 0 auto;
-  min-height: 100%;
+  min-height: 100vh;
 }
 .login_title {
   width: 85%;

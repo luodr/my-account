@@ -51,7 +51,7 @@
             >{{item}}</li>
 
             <li class="ripple">
-              <img :src="calc_delete" class="calc_delete cur"  @click="clickDelete" />
+              <img :src="calc_delete" class="calc_delete cur" @click="clickDelete" />
             </li>
           </ul>
         </div>
@@ -365,7 +365,7 @@ export default {
   width: 100%;
 
   margin: 0 auto;
-  min-height: 100%;
+  min-height: 100vh;
 }
 #recordType {
   width: 50%;
@@ -404,8 +404,10 @@ export default {
   list-style: none;
   width: 25%;
   float: left;
+
   text-align: center;
 }
+
 #types ul li img {
   width: 0.7rem;
   height: 0.7rem;
@@ -473,5 +475,4 @@ export default {
   display: inline-block;
   vertical-align: middle;
 }
-
 </style>

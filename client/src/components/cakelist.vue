@@ -13,7 +13,7 @@
       <div class="info_div">
         <span class="cakelistType">{{item[1].name}}</span>
       </div>
-      <span class="cakeListMoney">{{item[1].value}}</span>
+      <span class="cakeListMoney">{{Number(item[1].value ).toFixed(2)}}</span>
       <!-- <img :src="next" class="cakeImg" /> -->
     </div>
     

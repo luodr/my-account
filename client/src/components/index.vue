@@ -21,8 +21,8 @@
             <li></li>
           </ul>
           <ul class="month_info">
-            <li style="border-right: white solid 1px;">{{expend}}</li>
-            <li>{{income}}</li>
+            <li style="border-right: white solid 1px;">{{Number(expend).toFixed(2)}}</li>
+            <li>{{Number(income ).toFixed(2)}}</li>
             <li></li>
           </ul>
         </div>
@@ -128,7 +128,7 @@ export default {
           }
         })
         .catch(() => {
-          //链接不是服务器,使用测试数据
+          //链接不上服务器,使用测试数据
           this.data = this.$testInfo.indexData;
           this.setExpendAndIncome();
         });
@@ -139,12 +139,12 @@ export default {
 
 <style>
 #main {
-  /* min-height:100vh; */
+  min-height: 100vh;
   color: white;
   width: 100%;
-
+  
   margin: 0 auto;
-  min-height: 100%;
+  /* min-height: 100%; */
   /* background: url(../assets/banner.png); */
 }
 
@@ -202,7 +202,6 @@ export default {
   color: white;
   position: relative;
   left: 0.5rem;
-  
 }
 .drawer {
   color: black;
