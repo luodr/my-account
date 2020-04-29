@@ -27,7 +27,9 @@
           </ul>
         </div>
       </div>
+      
     </div>
+   
     <listInfo :infos="data"></listInfo>
     <div id="add" class="cur" v-on:click="add"></div>
 
@@ -37,15 +39,15 @@
       :direction="direction"
       :before-close="handleClose"
       :size="size"
-      :wrapperClosable="true"
-      :with-header="false"
-      :modal-append-to-body="false"
+      :wrapperClosable=true
+      :modal-append-to-body=false
+      :with-header=false
       class="drawer"
-      :modal="true"
+      :modal=true
     >
       <br />
 
-      <div class="message_but el-button" @click="toLogin" v-if="!isLogin">点我登录</div>
+      <div class="message_but el-button toLogin cur" @click="toLogin" v-if="!isLogin">立即登录</div>
       <br />
       <br />
       <br />
@@ -183,6 +185,7 @@ export default {
   top: 0.3rem;
   /* font-size: 0.3rem; */
   vertical-align: middle;
+  font-size: 0.45rem;
 }
 .banner_top div {
   width: 95%;
@@ -203,6 +206,10 @@ export default {
   position: relative;
   left: 0.5rem;
 }
+.month_title{
+  font-size: 0.3rem;
+  color:floralwhite;
+}
 .drawer {
   color: black;
   position: absolute;
@@ -212,13 +219,15 @@ export default {
 .el-drawer__container {
   background: rgba(0, 0, 0, 0.5);
 }
-/* }
-.slide-right-enter-active,
-.slide-right-leave-active,
-.slide-left-enter-active,
-.slide-left-leave-active {
-  will-change: transform;
-  transition: all 500ms;
-  position: absolute;
-} */
+.toLogin{
+  color: white;
+  background: #72b7fc;
+  width: 100px;
+  border-radius: 25px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 30px;
+  height: 30px;
+}
+
 </style>

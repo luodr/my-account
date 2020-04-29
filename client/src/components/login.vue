@@ -78,7 +78,7 @@ export default {
                   clearInterval(interval);
                 } else {
                   let m = parseInt((this.endTIme - now) / 1000);
-                  this.hint = `已发送(${m})秒`;
+                  this.hint = `${m}秒`;
                 }
               }, 1000);
             } else {
@@ -172,6 +172,7 @@ export default {
   width: 85%;
   margin: 0 auto;
   position: relative;
+
 }
 .login_icon {
   height: 0.7rem;
@@ -194,7 +195,7 @@ export default {
   position: relative;
   top: 0.25rem;
   vertical-align: middle;
-  border: 1px solid #9378fb;
+ 
 
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -210,7 +211,7 @@ export default {
 .login_bt {
   height: 1rem;
   width: 60%;
-
+  color:white;
   margin: 0 auto;
   position: relative;
   top: 1.5rem;
@@ -220,8 +221,8 @@ export default {
   background: linear-gradient(#72b7fc);
   text-align: center;
   line-height: 1rem;
-  font-size: 0.4rem;
-  border-radius: 15px;
+  font-size: 0.38rem;
+  border-radius: 25px;
 }
 .login_div {
   position: relative;

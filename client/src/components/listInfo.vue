@@ -74,7 +74,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   height: 0.9rem;
-  border-bottom: #b1abb8 solid 1px;
+  /* border-bottom: #b1abb8 solid 1px; */
   position: relative;
   /* top: 0.5rem; */
   font-size: 0.3rem;
