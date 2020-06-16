@@ -3,6 +3,10 @@
     <transition :name="transitionName">
       <router-view :key="$route.fullPath"></router-view>
     </transition>
+      <div id="down">
+        <p>© 2020-present sinlo.net</p>
+       <p><a href="http://www.beian.miit.gov.cn/">桂ICP备20004106号</a></p>
+     </div>
   </div>
 </template>
 
@@ -47,6 +51,14 @@ body {
 }
 #app{
   background: white;
+}
+#down{
+  text-align: center;
+   text-decoration: none;
+}
+a{
+
+   text-decoration: none;
 }
 .go_back {
   width: 0.5rem;
