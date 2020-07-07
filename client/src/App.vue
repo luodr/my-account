@@ -1,18 +1,20 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-      <router-view :key="$route.fullPath"></router-view>
+      <div>
+        <router-view :key="$route.fullPath"></router-view>
+        <div id="down">
+          <p>© 2020-present sinlo.net</p>
+          <p>
+            <a href="http://www.beian.miit.gov.cn/">桂ICP备20004106号</a>
+          </p>
+        </div>
+      </div>
     </transition>
-      <div id="down">
-        <p>© 2020-present sinlo.net</p>
-       <p><a href="http://www.beian.miit.gov.cn/">桂ICP备20004106号</a></p>
-     </div>
   </div>
 </template>
-
 <script>
 // import index from './components/index.vue'
-
 export default {
   name: "App",
   components: {},
@@ -49,16 +51,26 @@ body {
   margin: 0 auto;
   background: #f8f8f8;
 }
-#app{
+#app {
   background: white;
 }
-#down{
+#down {
+  padding: 10px 0px;
   text-align: center;
-   text-decoration: none;
+  text-decoration: none;
+  color: #4d76b3;
+  border-top: 1px solid #eaecef;
 }
-a{
-
-   text-decoration: none;
+#down p {
+  padding: 5px 0px;
+}
+#down p a {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-user-select: none;
+  -moz-user-focus: none;
+  -moz-user-select: none;
+  color: #4d76b3;
+  text-decoration: none;
 }
 .go_back {
   width: 0.5rem;
@@ -94,11 +106,11 @@ a{
   opacity: 0;
   transform: translate3d(-100%, 0, 0);
 }
-.cur{
- cursor: pointer;
- /*css*/
--webkit-tap-height-color:transprent;
-/*或者*/
--webkit-tap-highlight-color:rgba(0,0,0,0);
+.cur {
+  cursor: pointer;
+  /*css*/
+  -webkit-tap-height-color: transprent;
+  /*或者*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 </style>
