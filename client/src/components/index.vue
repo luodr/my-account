@@ -23,7 +23,7 @@
           <ul class="month_info">
             <li style="border-right: white solid 1px;">{{Number(expend).toFixed(2)}}</li>
             <li>{{Number(income ).toFixed(2)}}</li>
-            <li></li>
+            <li  id="todayExpend">今日支出:{{Number(toDayExpend).toFixed(2)}}</li>
           </ul>
         </div>
       </div>
@@ -81,7 +81,8 @@ export default {
       drawer: false,
       direction: "ltr",
       isLogin: false,
-      size: "50%"
+      size: "50%",
+      toDayExpend:0
     };
   },
   methods: {
@@ -98,11 +99,17 @@ export default {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
     setExpendAndIncome() {
+       let date = new Date();
       if (this.data) {
         this.expend = 0;
         this.income = 0;
+        this.toDayExpend=0;
         for (let item of this.data) {
           if (item.type == "支出") {
+            let today = new Date(item.date);
+            if(today.getDate()===date.getDate()&&date.getMonth()===today.getMonth()){
+              this.toDayExpend += item.money;
+            }
             this.expend += item.money;
           } else {
             this.income += item.money;
@@ -229,5 +236,12 @@ export default {
   line-height: 30px;
   height: 30px;
 }
-
+#todayExpend{
+  display: block;
+  float: left;
+  width: 100%;
+  font-size: 12px;
+  position: relative;
+  top: 5px;
+}
 </style>
