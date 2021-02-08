@@ -1,0 +1,7 @@
+{
+    "user": "user",
+    "password": "password",
+    "url": "url",
+    "database": "test",
+    "else": "retryWrites=true&w=majority"
+}
